@@ -1,0 +1,275 @@
+<script> 
+ 
+    /* ========================= 
+       IMAGE PREVIEW 
+    ========================== */ 
+ 
+    function previewImage(event) { 
+        const file = event.target.files[0]; 
+ 
+        if (file) { 
+            const reader = new FileReader(); 
+ 
+            reader.onload = function(e) { 
+                const preview = document.getElementById("imagePreview"); 
+                const previewContainer = document.getElementById("previewContainer"); 
+ 
+                if (preview) { 
+                    preview.src = e.target.result; 
+                } 
+ 
+                if (previewContainer) { 
+                    previewContainer.style.display = "block"; 
+                } 
+            }; 
+ 
+            reader.readAsDataURL(file); 
+        } 
+    } 
+ 
+ 
+    /* ========================= 
+       LANGUAGE SYSTEM 
+    ========================== */ 
+ 
+    let teluguMode = false; 
+ 
+ 
+    function setText(id, english, telugu) { 
+        const element = document.getElementById(id); 
+ 
+        if (element) { 
+            element.innerText = teluguMode ? telugu : english; 
+        } 
+    } 
+ 
+ 
+    function applyLanguage() { 
+ 
+        /* Navigation */ 
+        setText("navHome", "Home", "హోమ్"); 
+        setText("navScanner", "Scanner", "స్కానర్"); 
+        setText("navHow", "How It Works", "ఎలా పనిచేస్తుంది"); 
+        setText("navCrops", "Crops", "పంటలు"); 
+        setText("navFeatures", "Features", "ఫీచర్లు"); 
+        setText("navAbout", "About", "మా గురించి"); 
+ 
+        /* Hero */ 
+        setText( 
+            "heroBadge", 
+            "AI-POWERED CROP INTELLIGENCE", 
+            "AI ఆధారిత పంట ఆరోగ్య సమాచారం" 
+        ); 
+ 
+        setText( 
+            "heroTitle", 
+            "Protect Your Crops with AI", 
+            "AI తో మీ పంటలను రక్షించండి" 
+        ); 
+ 
+        setText( 
+            "heroDescription", 
+            "Upload a leaf image and let AI identify possible crop diseases with confidence and simple farmer-friendly guidance.", 
+            "ఆకు చిత్రాన్ని అప్‌లోడ్ చేయండి. AI పంట వ్యాధిని గుర్తించి, నమ్మక స్థాయి మరియు రైతులకు సులభమైన సూచనలు అందిస్తుంది." 
+        ); 
+ 
+        /* Scanner */ 
+        setText( 
+            "scannerTitle", 
+            "AI Crop Disease Scanner", 
+            "AI పంట వ్యాధి స్కానర్" 
+        ); 
+ 
+        setText( 
+            "scannerDescription", 
+            "Upload a clear image of a crop leaf to analyze its health.", 
+            "పంట ఆకుకు స్పష్టమైన చిత్రాన్ని అప్‌లోడ్ చేసి ఆరోగ్యాన్ని పరీక్షించండి." 
+        ); 
+ 
+        setText( 
+            "uploadTitle", 
+            "Upload Leaf Image", 
+            "ఆకు చిత్రాన్ని అప్‌లోడ్ చేయండి" 
+        ); 
+ 
+        setText( 
+            "uploadDescription", 
+            "Drag & drop or choose an image from your device", 
+            "మీ పరికరం నుండి చిత్రాన్ని ఎంచుకోండి" 
+        ); 
+ 
+        setText( 
+            "analyzeButton", 
+            "Analyze Leaf", 
+            "ఆకును విశ్లేషించండి" 
+        ); 
+ 
+        /* How it works */ 
+        setText("processTitle", "How It Works", "ఇది ఎలా పనిచేస్తుంది"); 
+ 
+        setText( 
+            "processDescription", 
+            "Three simple steps to check your crop health.", 
+            "మీ పంట ఆరోగ్యాన్ని తెలుసుకోవడానికి మూడు సులభమైన దశలు." 
+        ); 
+ 
+        setText("step1Title", "Upload", "అప్‌లోడ్"); 
+        setText("step1Description", "Upload a clear leaf image.", "స్పష్టమైన ఆకు చిత్రాన్ని అప్‌లోడ్ చేయండి."); 
+ 
+        setText("step2Title", "Analyze", "విశ్లేషణ"); 
+        setText("step2Description", "AI analyzes the leaf image.", "AI ఆకు చిత్రాన్ని విశ్లేషిస్తుంది."); 
+ 
+        setText("step3Title", "Get Result", "ఫలితాన్ని పొందండి"); 
+        setText( 
+            "step3Description", 
+            "Get disease information and guidance.", 
+            "వ్యాధి సమాచారం మరియు సూచనలు పొందండి." 
+        ); 
+ 
+        /* Crops */ 
+        setText("cropsTitle", "Supported Crops", "సపోర్ట్ చేసే పంటలు"); 
+ 
+        setText( 
+            "cropsDescription", 
+            "Currently optimized for tomato leaf disease detection.", 
+            "ప్రస్తుతం టమాటా ఆకుల వ్యాధి గుర్తింపుకు అనుకూలంగా రూపొందించబడింది." 
+        ); 
+ 
+        /* Features */ 
+        setText( 
+            "featuresTitle", 
+            "Why Use AI Crop Doctor?", 
+            "AI Crop Doctor ఎందుకు ఉపయోగించాలి?" 
+        ); 
+ 
+        setText( 
+            "featuresDescription", 
+            "Simple technology designed to make crop health checking easier.", 
+            "పంట ఆరోగ్యాన్ని సులభంగా తెలుసుకోవడానికి రూపొందించిన సాంకేతిక పరిజ్ఞానం." 
+        ); 
+ 
+        setText( 
+            "feature1Title", 
+            "AI Disease Detection", 
+            "AI వ్యాధి గుర్తింపు" 
+        ); 
+ 
+        setText( 
+            "feature1Description", 
+            "Identify possible crop diseases from leaf images.", 
+            "ఆకు చిత్రాల ద్వారా పంట వ్యాధులను గుర్తించండి." 
+        ); 
+ 
+        setText( 
+            "feature2Title", 
+            "Simple Results", 
+            "సులభమైన ఫలితాలు" 
+        ); 
+ 
+        setText( 
+            "feature2Description", 
+            "Understand results without technical knowledge.", 
+            "టెక్నికల్ జ్ఞానం లేకపోయినా ఫలితాలను సులభంగా అర్థం చేసుకోండి." 
+        ); 
+ 
+        setText( 
+            "feature3Title", 
+            "Farmer Friendly", 
+            "రైతులకు అనుకూలం" 
+        ); 
+ 
+        setText( 
+            "feature3Description", 
+            "Get simple treatment and prevention guidance.", 
+            "సులభమైన చికిత్స మరియు నివారణ సూచనలు పొందండి." 
+        ); 
+ 
+        /* About */ 
+        setText( 
+            "aboutTitle", 
+            "About AI Crop Doctor", 
+            "AI Crop Doctor గురించి" 
+        ); 
+ 
+        setText( 
+            "aboutDescription", 
+            "AI Crop Doctor is an AI-powered crop health assistant designed to help identify possible crop diseases from leaf images.", 
+            "AI Crop Doctor అనేది ఆకు చిత్రాల ఆధారంగా పంట వ్యాధులను గుర్తించడంలో సహాయపడే AI ఆధారిత పంట ఆరోగ్య సహాయక వ్యవస్థ." 
+        ); 
+ 
+        /* Footer */ 
+        setText( 
+            "footerText", 
+            "AI-powered crop intelligence for smarter agriculture.", 
+            "స్మార్ట్ వ్యవసాయం కోసం AI ఆధారిత పంట ఆరోగ్య సమాచారం." 
+        ); 
+    } 
+ 
+ 
+    /* ========================= 
+       TOGGLE LANGUAGE 
+    ========================== */ 
+ 
+    function toggleLanguage() { 
+ 
+        teluguMode = !teluguMode; 
+ 
+        /* Save language */ 
+        localStorage.setItem( 
+            "cropLanguage", 
+            teluguMode ? "telugu" : "english" 
+        ); 
+ 
+        /* Button */ 
+        const languageButton = 
+            document.getElementById("languageButton"); 
+ 
+        if (languageButton) { 
+            languageButton.innerText = 
+                teluguMode ? "🌐 English" : "🌐 తెలుగు"; 
+        } 
+ 
+        /* Apply translations */ 
+        applyLanguage(); 
+    } 
+ 
+ 
+    /* ========================= 
+       LOAD SAVED LANGUAGE 
+    ========================== */ 
+ 
+    window.addEventListener("DOMContentLoaded", function () { 
+ 
+        const savedLanguage = 
+            localStorage.getItem("cropLanguage"); 
+ 
+        if (savedLanguage === "telugu") { 
+ 
+            teluguMode = true; 
+ 
+            const languageButton = 
+                document.getElementById("languageButton"); 
+ 
+            if (languageButton) { 
+                languageButton.innerText = "🌐 English"; 
+            } 
+ 
+            applyLanguage(); 
+ 
+        } else { 
+ 
+            teluguMode = false; 
+ 
+            const languageButton = 
+                document.getElementById("languageButton"); 
+ 
+            if (languageButton) { 
+                languageButton.innerText = "🌐 తెలుగు"; 
+            } 
+ 
+            applyLanguage(); 
+        } 
+ 
+    }); 
+ 
+</script> edhi add cheyali
