@@ -3,4 +3,3 @@ dataset/
 __pycache__/
 *.pyc
 static/uploads/
-model/*.pth
