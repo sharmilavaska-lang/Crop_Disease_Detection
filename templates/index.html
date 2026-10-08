@@ -1,275 +1,1182 @@
-<script> 
- 
-    /* ========================= 
-       IMAGE PREVIEW 
-    ========================== */ 
- 
-    function previewImage(event) { 
-        const file = event.target.files[0]; 
- 
-        if (file) { 
-            const reader = new FileReader(); 
- 
-            reader.onload = function(e) { 
-                const preview = document.getElementById("imagePreview"); 
-                const previewContainer = document.getElementById("previewContainer"); 
- 
-                if (preview) { 
-                    preview.src = e.target.result; 
-                } 
- 
-                if (previewContainer) { 
-                    previewContainer.style.display = "block"; 
-                } 
-            }; 
- 
-            reader.readAsDataURL(file); 
-        } 
-    } 
- 
- 
-    /* ========================= 
-       LANGUAGE SYSTEM 
-    ========================== */ 
- 
-    let teluguMode = false; 
- 
- 
-    function setText(id, english, telugu) { 
-        const element = document.getElementById(id); 
- 
-        if (element) { 
-            element.innerText = teluguMode ? telugu : english; 
-        } 
-    } 
- 
- 
-    function applyLanguage() { 
- 
-        /* Navigation */ 
-        setText("navHome", "Home", "హోమ్"); 
-        setText("navScanner", "Scanner", "స్కానర్"); 
-        setText("navHow", "How It Works", "ఎలా పనిచేస్తుంది"); 
-        setText("navCrops", "Crops", "పంటలు"); 
-        setText("navFeatures", "Features", "ఫీచర్లు"); 
-        setText("navAbout", "About", "మా గురించి"); 
- 
-        /* Hero */ 
-        setText( 
-            "heroBadge", 
-            "AI-POWERED CROP INTELLIGENCE", 
-            "AI ఆధారిత పంట ఆరోగ్య సమాచారం" 
-        ); 
- 
-        setText( 
-            "heroTitle", 
-            "Protect Your Crops with AI", 
-            "AI తో మీ పంటలను రక్షించండి" 
-        ); 
- 
-        setText( 
-            "heroDescription", 
-            "Upload a leaf image and let AI identify possible crop diseases with confidence and simple farmer-friendly guidance.", 
-            "ఆకు చిత్రాన్ని అప్‌లోడ్ చేయండి. AI పంట వ్యాధిని గుర్తించి, నమ్మక స్థాయి మరియు రైతులకు సులభమైన సూచనలు అందిస్తుంది." 
-        ); 
- 
-        /* Scanner */ 
-        setText( 
-            "scannerTitle", 
-            "AI Crop Disease Scanner", 
-            "AI పంట వ్యాధి స్కానర్" 
-        ); 
- 
-        setText( 
-            "scannerDescription", 
-            "Upload a clear image of a crop leaf to analyze its health.", 
-            "పంట ఆకుకు స్పష్టమైన చిత్రాన్ని అప్‌లోడ్ చేసి ఆరోగ్యాన్ని పరీక్షించండి." 
-        ); 
- 
-        setText( 
-            "uploadTitle", 
-            "Upload Leaf Image", 
-            "ఆకు చిత్రాన్ని అప్‌లోడ్ చేయండి" 
-        ); 
- 
-        setText( 
-            "uploadDescription", 
-            "Drag & drop or choose an image from your device", 
-            "మీ పరికరం నుండి చిత్రాన్ని ఎంచుకోండి" 
-        ); 
- 
-        setText( 
-            "analyzeButton", 
-            "Analyze Leaf", 
-            "ఆకును విశ్లేషించండి" 
-        ); 
- 
-        /* How it works */ 
-        setText("processTitle", "How It Works", "ఇది ఎలా పనిచేస్తుంది"); 
- 
-        setText( 
-            "processDescription", 
-            "Three simple steps to check your crop health.", 
-            "మీ పంట ఆరోగ్యాన్ని తెలుసుకోవడానికి మూడు సులభమైన దశలు." 
-        ); 
- 
-        setText("step1Title", "Upload", "అప్‌లోడ్"); 
-        setText("step1Description", "Upload a clear leaf image.", "స్పష్టమైన ఆకు చిత్రాన్ని అప్‌లోడ్ చేయండి."); 
- 
-        setText("step2Title", "Analyze", "విశ్లేషణ"); 
-        setText("step2Description", "AI analyzes the leaf image.", "AI ఆకు చిత్రాన్ని విశ్లేషిస్తుంది."); 
- 
-        setText("step3Title", "Get Result", "ఫలితాన్ని పొందండి"); 
-        setText( 
-            "step3Description", 
-            "Get disease information and guidance.", 
-            "వ్యాధి సమాచారం మరియు సూచనలు పొందండి." 
-        ); 
- 
-        /* Crops */ 
-        setText("cropsTitle", "Supported Crops", "సపోర్ట్ చేసే పంటలు"); 
- 
-        setText( 
-            "cropsDescription", 
-            "Currently optimized for tomato leaf disease detection.", 
-            "ప్రస్తుతం టమాటా ఆకుల వ్యాధి గుర్తింపుకు అనుకూలంగా రూపొందించబడింది." 
-        ); 
- 
-        /* Features */ 
-        setText( 
-            "featuresTitle", 
-            "Why Use AI Crop Doctor?", 
-            "AI Crop Doctor ఎందుకు ఉపయోగించాలి?" 
-        ); 
- 
-        setText( 
-            "featuresDescription", 
-            "Simple technology designed to make crop health checking easier.", 
-            "పంట ఆరోగ్యాన్ని సులభంగా తెలుసుకోవడానికి రూపొందించిన సాంకేతిక పరిజ్ఞానం." 
-        ); 
- 
-        setText( 
-            "feature1Title", 
-            "AI Disease Detection", 
-            "AI వ్యాధి గుర్తింపు" 
-        ); 
- 
-        setText( 
-            "feature1Description", 
-            "Identify possible crop diseases from leaf images.", 
-            "ఆకు చిత్రాల ద్వారా పంట వ్యాధులను గుర్తించండి." 
-        ); 
- 
-        setText( 
-            "feature2Title", 
-            "Simple Results", 
-            "సులభమైన ఫలితాలు" 
-        ); 
- 
-        setText( 
-            "feature2Description", 
-            "Understand results without technical knowledge.", 
-            "టెక్నికల్ జ్ఞానం లేకపోయినా ఫలితాలను సులభంగా అర్థం చేసుకోండి." 
-        ); 
- 
-        setText( 
-            "feature3Title", 
-            "Farmer Friendly", 
-            "రైతులకు అనుకూలం" 
-        ); 
- 
-        setText( 
-            "feature3Description", 
-            "Get simple treatment and prevention guidance.", 
-            "సులభమైన చికిత్స మరియు నివారణ సూచనలు పొందండి." 
-        ); 
- 
-        /* About */ 
-        setText( 
-            "aboutTitle", 
-            "About AI Crop Doctor", 
-            "AI Crop Doctor గురించి" 
-        ); 
- 
-        setText( 
-            "aboutDescription", 
-            "AI Crop Doctor is an AI-powered crop health assistant designed to help identify possible crop diseases from leaf images.", 
-            "AI Crop Doctor అనేది ఆకు చిత్రాల ఆధారంగా పంట వ్యాధులను గుర్తించడంలో సహాయపడే AI ఆధారిత పంట ఆరోగ్య సహాయక వ్యవస్థ." 
-        ); 
- 
-        /* Footer */ 
-        setText( 
-            "footerText", 
-            "AI-powered crop intelligence for smarter agriculture.", 
-            "స్మార్ట్ వ్యవసాయం కోసం AI ఆధారిత పంట ఆరోగ్య సమాచారం." 
-        ); 
-    } 
- 
- 
-    /* ========================= 
-       TOGGLE LANGUAGE 
-    ========================== */ 
- 
-    function toggleLanguage() { 
- 
-        teluguMode = !teluguMode; 
- 
-        /* Save language */ 
-        localStorage.setItem( 
-            "cropLanguage", 
-            teluguMode ? "telugu" : "english" 
-        ); 
- 
-        /* Button */ 
-        const languageButton = 
-            document.getElementById("languageButton"); 
- 
-        if (languageButton) { 
-            languageButton.innerText = 
-                teluguMode ? "🌐 English" : "🌐 తెలుగు"; 
-        } 
- 
-        /* Apply translations */ 
-        applyLanguage(); 
-    } 
- 
- 
-    /* ========================= 
-       LOAD SAVED LANGUAGE 
-    ========================== */ 
- 
-    window.addEventListener("DOMContentLoaded", function () { 
- 
-        const savedLanguage = 
-            localStorage.getItem("cropLanguage"); 
- 
-        if (savedLanguage === "telugu") { 
- 
-            teluguMode = true; 
- 
-            const languageButton = 
-                document.getElementById("languageButton"); 
- 
-            if (languageButton) { 
-                languageButton.innerText = "🌐 English"; 
-            } 
- 
-            applyLanguage(); 
- 
-        } else { 
- 
-            teluguMode = false; 
- 
-            const languageButton = 
-                document.getElementById("languageButton"); 
- 
-            if (languageButton) { 
-                languageButton.innerText = "🌐 తెలుగు"; 
-            } 
- 
-            applyLanguage(); 
-        } 
- 
-    }); 
- 
-</script> edhi add cheyali
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Multi-Crop Disease Detection</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4faf7;
+            color: #123b2b;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            height: 70px;
+            background: #075c45;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 5%;
+
+            box-shadow: 0 2px 12px #0002;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            font-weight: bold;
+        }
+
+        .logo-icon {
+            font-size: 30px;
+        }
+
+        .logo small {
+            display: block;
+            font-size: 12px;
+            font-weight: normal;
+            color: #d8eee7;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .lang {
+            border: 1px solid #ffffff66;
+            border-radius: 18px;
+            padding: 7px 12px;
+            cursor: pointer;
+        }
+
+
+        /* ================= HERO ================= */
+
+        .hero {
+
+            max-width: 1250px;
+            margin: auto;
+
+            background: white;
+
+            display: grid;
+            grid-template-columns: 1fr 1.15fr;
+
+            min-height: 350px;
+        }
+
+        .hero-text {
+            padding: 48px 42px;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            line-height: 1.1;
+
+            color: #075c45;
+
+            margin-bottom: 18px;
+        }
+
+        .hero p {
+            font-size: 15px;
+            line-height: 1.6;
+
+            color: #557064;
+
+            max-width: 500px;
+        }
+
+
+        /* ================= TAGS ================= */
+
+        .tags {
+
+            display: flex;
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin: 22px 0;
+        }
+
+        .tag {
+
+            padding: 9px 13px;
+
+            border: 1px solid #d4e9e0;
+
+            border-radius: 9px;
+
+            background: #f7fcfa;
+
+            font-size: 12px;
+        }
+
+
+        /* ================= BUTTON ================= */
+
+        .primary {
+
+            display: inline-block;
+
+            background: #07855e;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 9px;
+
+            padding: 14px 25px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            text-decoration: none;
+        }
+
+
+        /* ================= HERO IMAGE ================= */
+
+        .hero-img {
+
+            min-height: 350px;
+
+            background:
+
+                url("https://images.unsplash.com/photo-1598514982901-ae627a7c9b8a?auto=format&fit=crop&w=1100&q=80")
+
+                center / cover;
+        }
+
+
+        /* ================= CROPS ================= */
+
+        .crops {
+
+            max-width: 1250px;
+
+            margin: auto;
+
+            background: white;
+
+            border-top: 1px solid #dbece5;
+
+            display: grid;
+
+            grid-template-columns: repeat(8, 1fr);
+        }
+
+        .crop {
+
+            padding: 14px;
+
+            text-align: center;
+
+            border-right: 1px solid #e2eee9;
+
+            font-size: 12px;
+        }
+
+        .crop b {
+
+            display: block;
+
+            font-size: 25px;
+
+            margin-bottom: 5px;
+        }
+
+
+        /* ================= SECTION ================= */
+
+        .section {
+
+            max-width: 1100px;
+
+            margin: 45px auto;
+
+            padding: 0 20px;
+        }
+
+        .section h2 {
+
+            text-align: center;
+
+            color: #075c45;
+
+            margin-bottom: 10px;
+        }
+
+        .section > p {
+
+            text-align: center;
+
+            color: #6a7c74;
+
+            margin-bottom: 25px;
+        }
+
+
+        /* ================= SCANNER ================= */
+
+        .scanner {
+
+            background: white;
+
+            border: 1px solid #d8ebe3;
+
+            border-radius: 15px;
+
+            padding: 28px;
+
+            box-shadow: 0 8px 30px #1a725015;
+        }
+
+        .upload-grid {
+
+            display: grid;
+
+            grid-template-columns: 1.5fr .8fr;
+
+            gap: 25px;
+        }
+
+
+        /* ================= UPLOAD BOX ================= */
+
+        .upload-box {
+
+            border: 2px dashed #b8d9cd;
+
+            border-radius: 14px;
+
+            padding: 45px 20px;
+
+            text-align: center;
+        }
+
+        .cloud {
+
+            font-size: 48px;
+        }
+
+        .upload-box h3 {
+
+            margin: 10px 0;
+
+            color: #164c3b;
+        }
+
+        .upload-box p {
+
+            color: #71827b;
+
+            margin-bottom: 18px;
+        }
+
+        input[type="file"] {
+
+            display: none;
+        }
+
+        .choose {
+
+            display: inline-block;
+
+            background: #07855e;
+
+            color: white;
+
+            padding: 13px 24px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+
+        /* ================= IMAGE PREVIEW ================= */
+
+        .preview {
+
+            display: none;
+
+            margin: 20px auto 0;
+
+            max-width: 280px;
+
+            max-height: 210px;
+
+            border-radius: 10px;
+
+            object-fit: cover;
+        }
+
+
+        /* ================= ANALYZE BUTTON ================= */
+
+        .analyze {
+
+            margin-top: 18px;
+
+            background: #075c45;
+
+            color: white;
+
+            border: none;
+
+            padding: 13px 28px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        /* ================= AVAILABLE CROPS ================= */
+
+        .available {
+
+            background: #f7fcfa;
+
+            border: 1px solid #d8ebe3;
+
+            border-radius: 12px;
+
+            padding: 20px;
+        }
+
+        .available h3 {
+
+            margin-bottom: 15px;
+
+            color: #075c45;
+        }
+
+        .mini-crops {
+
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 10px;
+        }
+
+        .mini {
+
+            background: white;
+
+            border: 1px solid #e1eee9;
+
+            border-radius: 8px;
+
+            padding: 10px;
+
+            text-align: center;
+
+            font-size: 11px;
+        }
+
+        .mini b {
+
+            display: block;
+
+            font-size: 23px;
+        }
+
+
+        /* ================= NOTE ================= */
+
+        .note {
+
+            margin-top: 18px;
+
+            padding: 14px;
+
+            background: #e9f8ef;
+
+            border-radius: 10px;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        /* ================= HOW IT WORKS ================= */
+
+        .steps {
+
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .step {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            border: 1px solid #dcece6;
+
+            text-align: center;
+        }
+
+        .step-icon {
+
+            font-size: 35px;
+        }
+
+        .step h3 {
+
+            margin: 10px;
+
+            color: #075c45;
+        }
+
+        .step p {
+
+            color: #71827b;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+
+            background: #075c45;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 25px;
+
+            margin-top: 50px;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media(max-width:800px) {
+
+            nav {
+                gap: 10px;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-img {
+                min-height: 240px;
+            }
+
+            .crops {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .upload-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+
+            <span class="logo-icon">🌿</span>
+
+            <div>
+
+                AI Multi-Crop Disease Detection
+
+                <small>
+                    & Smart Crop Health Assistant
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <a href="#home">
+                Home
+            </a>
+
+            <a href="#history">
+                History
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
+            <span
+                class="lang"
+                onclick="toggleLanguage()"
+                id="langBtn">
+
+                🌐 EN
+
+            </span>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- ================= HOME ================= -->
+
+    <main id="home">
+
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+
+            <div class="hero-text">
+
+
+                <h1 id="heroTitle">
+
+                    Healthy Crops 🌿
+
+                    <br>
+
+                    Better Tomorrow
+
+                </h1>
+
+
+                <p id="heroDesc">
+
+                    Upload a leaf image and get instant
+                    AI-powered disease detection,
+                    crop identification and expert advice
+                    for healthier plants and higher yield.
+
+                </p>
+
+
+                <div class="tags">
+
+                    <span class="tag">
+                        🍃 Multi-Crop Support
+                    </span>
+
+                    <span class="tag">
+                        🔎 Disease Detection
+                    </span>
+
+                    <span class="tag">
+                        💊 Treatment Suggestions
+                    </span>
+
+                    <span class="tag">
+                        📄 History & Reports
+                    </span>
+
+                </div>
+
+
+                <a
+                    href="#scanner"
+                    class="primary">
+
+                    ⬆ Upload Leaf Image
+
+                </a>
+
+
+            </div>
+
+
+            <div class="hero-img"></div>
+
+
+        </section>
+
+
+
+        <!-- ================= CROP LIST ================= -->
+
+        <div class="crops">
+
+
+            <div class="crop">
+
+                <b>🍅</b>
+
+                Tomato
+
+            </div>
+
+
+            <div class="crop">
+
+                <b>🥔</b>
+
+                Potato
+
+            </div>
+
+
+            <div class="crop">
+
+                <b>🌽</b>
+
+                Maize
+
+            </div>
+
+
+            <div class="crop">
+
+                <b>🌾</b>
+
+                Rice
+
+            </div>
+
+
+            <div class="crop">
+
+                <b>🍎</b>
+
+                Apple
+
+            </div>
+
+
+            <div class="crop">
+
+                <b>🍇</b>
+
+                Grape
+
+            </div>
+
+
+            <div class="crop">
+
+                <b>🌶️</b>
+
+                Pepper
+
+            </div>
+
+
+            <div class="crop">
+
+                <b>🥒</b>
+
+                Cucumber
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================= SCANNER ================= -->
+
+        <section
+            class="section"
+            id="scanner">
+
+
+            <h2>
+
+                Upload Leaf Image
+
+            </h2>
+
+
+            <p>
+
+                Choose a clear image of a crop leaf
+                for AI-assisted analysis.
+
+            </p>
+
+
+            <div class="scanner">
+
+
+                <form
+                    action="/predict"
+                    method="POST"
+                    enctype="multipart/form-data">
+
+
+                    <div class="upload-grid">
+
+
+                        <!-- UPLOAD -->
+
+                        <div class="upload-box">
+
+
+                            <div class="cloud">
+
+                                ☁️
+
+                            </div>
+
+
+                            <h3>
+
+                                Drag & drop an image here
+
+                            </h3>
+
+
+                            <p>
+
+                                or
+
+                            </p>
+
+
+                            <label
+                                class="choose"
+                                for="image">
+
+                                🖼 Choose Image
+
+                            </label>
+
+
+                            <input
+                                id="image"
+                                name="image"
+                                type="file"
+                                accept="image/*"
+                                onchange="previewImage(event)"
+                                required>
+
+
+                            <img
+                                id="preview"
+                                class="preview"
+                                alt="Selected leaf preview">
+
+
+                            <br>
+
+
+                            <button
+                                class="analyze"
+                                type="submit">
+
+                                🔍 Analyze Leaf
+
+                            </button>
+
+
+                            <p
+                                style="margin-top:12px;font-size:11px">
+
+                                Supported:
+                                JPG, JPEG, PNG
+
+                            </p>
+
+
+                        </div>
+
+
+
+                        <!-- AVAILABLE CROPS -->
+
+                        <div class="available">
+
+
+                            <h3>
+
+                                Available Crops
+
+                            </h3>
+
+
+                            <div class="mini-crops">
+
+
+                                <div class="mini">
+
+                                    <b>🍅</b>
+
+                                    Tomato
+
+                                </div>
+
+
+                                <div class="mini">
+
+                                    <b>🥔</b>
+
+                                    Potato
+
+                                </div>
+
+
+                                <div class="mini">
+
+                                    <b>🌽</b>
+
+                                    Maize
+
+                                </div>
+
+
+                                <div class="mini">
+
+                                    <b>🌾</b>
+
+                                    Rice
+
+                                </div>
+
+
+                                <div class="mini">
+
+                                    <b>🍎</b>
+
+                                    Apple
+
+                                </div>
+
+
+                                <div class="mini">
+
+                                    <b>🍇</b>
+
+                                    Grape
+
+                                </div>
+
+
+                                <div class="mini">
+
+                                    <b>🌶️</b>
+
+                                    Pepper
+
+                                </div>
+
+
+                                <div class="mini">
+
+                                    <b>🥒</b>
+
+                                    Cucumber
+
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="note">
+
+                                💡 You can upload any crop
+                                leaf image. The current trained
+                                AI model is optimized for the
+                                classes available in your project.
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= HOW IT WORKS ================= -->
+
+        <section class="section">
+
+
+            <h2>
+
+                How It Works
+
+            </h2>
+
+
+            <p>
+
+                Three simple steps to check your crop health.
+
+            </p>
+
+
+            <div class="steps">
+
+
+                <div class="step">
+
+                    <div class="step-icon">
+                        📤
+                    </div>
+
+                    <h3>
+                        1. Upload
+                    </h3>
+
+                    <p>
+
+                        Choose a clear crop leaf
+                        image from your device.
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="step">
+
+                    <div class="step-icon">
+                        🤖
+                    </div>
+
+                    <h3>
+                        2. Analyze
+                    </h3>
+
+                    <p>
+
+                        Our trained AI model
+                        analyzes the leaf image.
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="step">
+
+                    <div class="step-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        3. Get Result
+                    </h3>
+
+                    <p>
+
+                        See the predicted disease,
+                        confidence and guidance.
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= ABOUT ================= -->
+
+        <section
+            class="section"
+            id="about">
+
+
+            <h2>
+
+                About AI Crop Doctor
+
+            </h2>
+
+
+            <p>
+
+                AI-assisted crop health information
+                designed to make disease checking
+                easier for farmers.
+
+            </p>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        🌱
+
+        <strong>
+            AI Multi-Crop Disease Detection
+        </strong>
+
+        <br>
+
+        <small>
+            Smart tools for smarter agriculture
+        </small>
+
+    </footer>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+
+        /* IMAGE PREVIEW */
+
+        function previewImage(event) {
+
+            const file =
+                event.target.files[0];
+
+            const preview =
+                document.getElementById("preview");
+
+
+            if (file) {
+
+                preview.src =
+                    URL.createObjectURL(file);
+
+                preview.style.display =
+                    "block";
+
+            }
+
+        }
+
+
+
+        /* LANGUAGE */
+
+        let telugu = false;
+
+
+        function toggleLanguage() {
+
+            telugu = !telugu;
+
+
+            document.getElementById("langBtn")
+                .textContent =
+                telugu
+                    ? "🌐 తెలుగు"
+                    : "🌐 EN";
+
+
+            document.getElementById("heroTitle")
+                .innerHTML =
+                telugu
+
+                    ? "ఆరోగ్యకరమైన పంటలు 🌿<br>మంచి భవిష్యత్తు"
+
+                    : "Healthy Crops 🌿<br>Better Tomorrow";
+
+
+            document.getElementById("heroDesc")
+                .textContent =
+
+                telugu
+
+                    ? "ఆకు చిత్రాన్ని అప్‌లోడ్ చేసి AI ద్వారా పంట వ్యాధిని గుర్తించండి."
+
+                    : "Upload a leaf image and get instant AI-powered disease detection, crop identification and expert advice for healthier plants and higher yield.";
+
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>
