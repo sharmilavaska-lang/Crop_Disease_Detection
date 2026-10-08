@@ -1,1303 +1,1794 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AI Crop Doctor | Crop Health Report</title>
+    <title>AI Crop Doctor - Result</title>
 
     <style>
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: "Segoe UI", Arial, sans-serif;
-            background: #f4f8f3;
-            color: #183b25;
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f7f8f2;
+            color: #14231d;
+            min-height: 100vh;
         }
 
-        header {
-            background: linear-gradient(135deg, #0d5c32, #18864a);
-            color: white;
-            padding: 18px 7%;
+        button {
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           TOP NAVIGATION
+        ===================================================== */
+
+        .topbar {
+            height: 72px;
+
+            background:
+                rgba(247, 248, 242, 0.94);
+
+            border-bottom:
+                1px solid #dfe8e1;
+
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,.12);
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+            position: sticky;
+            top: 0;
+
+            z-index: 100;
+
+            backdrop-filter: blur(16px);
         }
 
-        .logo {
+        .brand {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .logo-icon {
+        .brand-icon {
             width: 45px;
             height: 45px;
-            background: rgba(255,255,255,.15);
+
             border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #10b981,
+                    #a3e635
+                );
+
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 25px;
+
+            font-size: 24px;
+
+            box-shadow:
+                0 0 22px
+                rgba(16, 185, 129, 0.20);
         }
 
-        .logo h2 {
-            font-size: 20px;
+        .brand-text h2 {
+            color: #123b2c;
+
+            font-size: 18px;
+
+            line-height: 1.1;
         }
 
-        .logo p {
-            font-size: 12px;
-            opacity: .8;
+        .brand-text span {
+            color: #059669;
+
+            font-size: 9px;
+
+            font-weight: 900;
+
+            letter-spacing: 1.5px;
         }
 
-        .header-actions {
+
+        /* =====================================================
+           LANGUAGE
+        ===================================================== */
+
+        .language-switch {
             display: flex;
-            gap: 10px;
-            align-items: center;
-        }
 
-        .lang-btn,
-        .back-btn {
-            color: white;
-            text-decoration: none;
-            padding: 10px 16px;
-            border: 1px solid rgba(255,255,255,.4);
+            gap: 4px;
+
+            background: #e8eee8;
+
+            padding: 4px;
+
             border-radius: 10px;
+        }
+
+        .language-switch button {
+            border: none;
+
             background: transparent;
-            cursor: pointer;
-            font-size: 14px;
+
+            color: #68776e;
+
+            padding: 7px 12px;
+
+            border-radius: 7px;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            transition: 0.2s ease;
         }
 
-        .lang-btn:hover,
-        .back-btn:hover {
-            background: rgba(255,255,255,.15);
+        .language-switch button.active {
+            background:
+                linear-gradient(
+                    135deg,
+                    #059669,
+                    #10b981
+                );
+
+            color: white;
+
+            box-shadow:
+                0 5px 14px
+                rgba(16, 185, 129, 0.20);
         }
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 35px auto;
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .page {
+            max-width: 1250px;
+
+            margin: auto;
+
+            padding: 40px 25px 60px;
         }
 
-        .heading {
-            text-align: center;
-            margin-bottom: 30px;
-        }
 
-        .badge {
-            display: inline-block;
-            background: #e4f7e9;
-            color: #08763b;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
+        /* =====================================================
+           PAGE HEADER
+        ===================================================== */
 
-        .heading h1 {
-            font-size: 34px;
-            margin-bottom: 8px;
-        }
-
-        .heading p {
-            color: #68776d;
-        }
-
-        .result-grid {
-            display: grid;
-            grid-template-columns: .9fr 1.1fr;
-            gap: 25px;
+        .page-header {
             margin-bottom: 25px;
         }
 
-        .card,
-        .info-card {
-            background: white;
-            border-radius: 22px;
-            padding: 25px;
-            box-shadow: 0 8px 30px rgba(25,70,40,.08);
-            border: 1px solid #e6eee7;
-        }
-
-        .image-card h3 {
-            margin-bottom: 15px;
-        }
-
-        .leaf-image {
-            width: 100%;
-            height: 350px;
-            object-fit: cover;
-            border-radius: 17px;
-            border: 5px solid #edf7ef;
-        }
-
-        .status {
+        .page-tag {
             display: inline-flex;
-            padding: 8px 14px;
-            border-radius: 30px;
-            background: #fff1dc;
-            color: #a65a00;
-            font-weight: 700;
-            font-size: 13px;
-            margin-bottom: 18px;
+
+            align-items: center;
+
+            gap: 7px;
+
+            background: #dcfce7;
+
+            color: #047857;
+
+            border:
+                1px solid #bbf7d0;
+
+            padding: 7px 12px;
+
+            border-radius: 999px;
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            letter-spacing: 0.7px;
+
+            margin-bottom: 12px;
         }
 
-        .result-card h2 {
-            font-size: 34px;
-            color: #164e2c;
-            margin-bottom: 5px;
+        .page-header h1 {
+            font-size:
+                clamp(30px, 5vw, 46px);
+
+            color: #0b2119;
+
+            line-height: 1.1;
         }
 
-        .scientific {
+        .page-header h1 span {
+            color: #059669;
+        }
+
+        .page-header p {
+            margin-top: 9px;
+
             color: #718078;
-            font-style: italic;
-            margin-bottom: 22px;
+
+            font-size: 14px;
         }
 
-        .crop-box {
-            background: #eef9f1;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 18px;
+
+        /* =====================================================
+           MAIN RESULT GRID
+        ===================================================== */
+
+        .result-grid {
+            display: grid;
+
+            grid-template-columns:
+                0.85fr
+                1.15fr;
+
+            gap: 25px;
+
+            align-items: start;
         }
 
-        .crop-label {
-            display: block;
-            font-size: 12px;
-            color: #718078;
-            margin-bottom: 4px;
+
+        /* =====================================================
+           IMAGE CARD
+        ===================================================== */
+
+        .image-card {
+            background: white;
+
+            border:
+                1px solid #dfeae2;
+
+            border-radius: 25px;
+
+            padding: 18px;
+
+            box-shadow:
+                0 20px 50px
+                rgba(11, 47, 36, 0.06);
+
+            position: sticky;
+
+            top: 95px;
         }
 
-        .crop-box strong {
-            font-size: 18px;
-        }
-
-        .confidence-title {
+        .image-title {
             display: flex;
+
             justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 14px;
+        }
+
+        .image-title h3 {
+            font-size: 15px;
+
+            color: #163a2b;
+        }
+
+        .crop-badge {
+            background: #ecfdf5;
+
+            color: #047857;
+
+            border:
+                1px solid #d1fae5;
+
+            padding: 5px 9px;
+
+            border-radius: 999px;
+
+            font-size: 9px;
+
+            font-weight: 900;
+        }
+
+        .image-container {
+            width: 100%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8faf9,
+                    #edf7f0
+                );
+
+            border-radius: 18px;
+
+            padding: 12px;
+
+            border:
+                1px solid #e0ebe3;
+        }
+
+        .image-container img {
+            width: 100%;
+
+            max-height: 520px;
+
+            object-fit: contain;
+
+            display: block;
+
+            border-radius: 13px;
+        }
+
+        .image-caption {
+            margin-top: 13px;
+
+            text-align: center;
+
+            color: #7b8a81;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           RESULT CARD
+        ===================================================== */
+
+        .result-card {
+            background: white;
+
+            border:
+                1px solid #dfeae2;
+
+            border-radius: 25px;
+
+            padding: 28px;
+
+            box-shadow:
+                0 20px 50px
+                rgba(11, 47, 36, 0.06);
+        }
+
+
+        /* =====================================================
+           DISEASE HEADER
+        ===================================================== */
+
+        .disease-header {
+            padding-bottom: 22px;
+
+            border-bottom:
+                1px solid #e6eee8;
+
+            margin-bottom: 20px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 7px 11px;
+
+            background: #ecfdf5;
+
+            color: #047857;
+
+            border:
+                1px solid #bbf7d0;
+
+            border-radius: 999px;
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            margin-bottom: 12px;
+        }
+
+        .status-dot {
+            width: 7px;
+
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #10b981;
+
+            box-shadow:
+                0 0 8px
+                rgba(16, 185, 129, 0.7);
+        }
+
+        .disease-header h2 {
+            color: #0b2119;
+
+            font-size:
+                clamp(25px, 4vw, 37px);
+
+            line-height: 1.15;
+
             margin-bottom: 8px;
         }
 
-        .confidence-title strong {
-            color: #08763b;
+        .scientific-name {
+            color: #708077;
+
+            font-size: 13px;
+
+            font-style: italic;
+        }
+
+
+        /* =====================================================
+           INFO GRID
+        ===================================================== */
+
+        .info-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 13px;
+
+            margin-bottom: 22px;
+        }
+
+        .info-box {
+            padding: 16px;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fbfefc,
+                    #f1f8f3
+                );
+
+            border:
+                1px solid #e1ece4;
+        }
+
+        .info-label {
+            display: block;
+
+            color: #829188;
+
+            font-size: 9px;
+
+            font-weight: 900;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.8px;
+
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            color: #173c2c;
+
+            font-size: 14px;
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           CONFIDENCE
+        ===================================================== */
+
+        .confidence-section {
+            padding: 19px;
+
+            border-radius: 17px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #071c16,
+                    #0d3d2d
+                );
+
+            margin-bottom: 22px;
+
+            color: white;
+        }
+
+        .confidence-top {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 11px;
+        }
+
+        .confidence-title {
+            font-size: 12px;
+
+            color: #d1fae5;
+
+            font-weight: 800;
+        }
+
+        .confidence-value {
+            color: #a3e635;
+
+            font-size: 20px;
+
+            font-weight: 900;
         }
 
         .progress {
-            width: 100%;
-            height: 13px;
-            background: #e8eee9;
-            border-radius: 20px;
+            height: 9px;
+
+            background:
+                rgba(255,255,255,0.10);
+
+            border-radius: 999px;
+
             overflow: hidden;
         }
 
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg,#f2b84b,#ef8b36);
-            border-radius: 20px;
+
+            width: {{ confidence }}%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #10b981,
+                    #a3e635
+                );
+
+            border-radius: 999px;
+
+            box-shadow:
+                0 0 15px
+                rgba(163,230,53,0.45);
+
+            transition:
+                width 1s ease;
         }
 
-        .warning {
-            margin-top: 18px;
-            padding: 14px;
-            border-radius: 14px;
-            background: #fff7e8;
-            border-left: 5px solid #f1a63a;
-            color: #77521c;
-            font-size: 14px;
-            line-height: 1.6;
+        .confidence-note {
+            margin-top: 9px;
+
+            color: #9bc7b1;
+
+            font-size: 10px;
         }
 
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2,1fr);
-            gap: 22px;
-            margin-top: 25px;
+
+        /* =====================================================
+           DETAIL SECTIONS
+        ===================================================== */
+
+        .detail-section {
+            padding: 18px 0;
+
+            border-bottom:
+                1px solid #e7eee9;
         }
 
-        .info-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
+        .detail-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .detail-heading {
             display: flex;
+
             align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 9px;
+        }
+
+        .detail-icon {
+            width: 35px;
+
+            height: 35px;
+
+            flex-shrink: 0;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ecfdf5,
+                    #ecfccb
+                );
+
+            display: flex;
+
+            align-items: center;
+
             justify-content: center;
-            font-size: 24px;
-            margin-bottom: 15px;
+
+            font-size: 16px;
+
+            border:
+                1px solid #d1fae5;
         }
 
-        .green { background: #e2f7e8; }
-        .yellow { background: #fff4d8; }
-        .orange { background: #ffeadb; }
-        .blue { background: #e1f2ff; }
+        .detail-heading h3 {
+            color: #163a2b;
 
-        .info-card h3 {
-            margin-bottom: 10px;
-            font-size: 20px;
+            font-size: 15px;
         }
 
-        .info-card p {
-            color: #65736a;
-            line-height: 1.7;
-            font-size: 14px;
+        .detail-content {
+            color: #627168;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+
+            padding-left: 45px;
         }
 
-        .info-card ul {
-            list-style: none;
-            margin-top: 10px;
-        }
 
-        .info-card li {
-            padding: 9px 0;
-            border-bottom: 1px solid #edf1ee;
-            font-size: 14px;
-            color: #526158;
-        }
+        /* =====================================================
+           ACTION SECTION
+        ===================================================== */
 
-        .info-card li::before {
-            content: "✓";
-            color: #149447;
-            font-weight: bold;
-            margin-right: 10px;
-        }
+        .action-box {
+            margin-top: 20px;
 
-        .action-section {
-            margin-top: 25px;
-            background: linear-gradient(135deg,#0d5c32,#18864a);
-            color: white;
-            border-radius: 22px;
-            padding: 30px;
-        }
+            padding: 18px;
 
-        .action-section h2 {
-            margin-bottom: 20px;
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(3,1fr);
-            gap: 18px;
-        }
-
-        .step {
-            background: rgba(255,255,255,.12);
-            border: 1px solid rgba(255,255,255,.18);
-            padding: 20px;
             border-radius: 17px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ecfdf5,
+                    #f0fdf4
+                );
+
+            border:
+                1px solid #bbf7d0;
+
+            border-left:
+                5px solid #10b981;
         }
 
-        .step-number {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: #f6c453;
-            color: #244a2f;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            margin-bottom: 12px;
-        }
+        .action-box h3 {
+            color: #047857;
 
-        .step h3 {
+            font-size: 15px;
+
             margin-bottom: 7px;
         }
 
-        .step p {
+        .action-box p {
+            color: #456055;
+
             font-size: 13px;
-            line-height: 1.6;
-            opacity: .9;
-        }
 
-        .tip {
-            margin-top: 25px;
-            padding: 22px;
-            background: linear-gradient(135deg,#fff7cf,#fffdf1);
-            border: 1px solid #f4df8d;
-            border-radius: 20px;
-        }
-
-        .tip h3 {
-            color: #805d00;
-            margin-bottom: 8px;
-        }
-
-        .tip p {
-            color: #685a2c;
             line-height: 1.7;
         }
 
-        .bottom {
-            text-align: center;
-            margin: 35px 0;
+
+        /* =====================================================
+           IMPORTANT NOTE
+        ===================================================== */
+
+        .important-note {
+            margin-top: 20px;
+
+            padding: 17px;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fffbea,
+                    #fffdf5
+                );
+
+            border:
+                1px solid #f1e7bd;
+
+            color: #716332;
+
+            font-size: 12px;
+
+            line-height: 1.65;
         }
 
-        .new-scan {
-            display: inline-block;
-            background: linear-gradient(135deg,#0d713a,#1ba354);
-            color: white;
+        .important-note strong {
+            color: #66551c;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .bottom-actions {
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 25px;
+
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+
+            border-radius: 12px;
+
+            padding: 13px 19px;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            transition: 0.2s ease;
+
             text-decoration: none;
-            padding: 14px 28px;
-            border-radius: 13px;
-            font-weight: 700;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
         }
 
-        .bottom p {
-            margin-top: 12px;
-            color: #7a867e;
-            font-size: 13px;
+        .btn-primary {
+            background:
+                linear-gradient(
+                    135deg,
+                    #059669,
+                    #10b981
+                );
+
+            color: white;
+
+            box-shadow:
+                0 9px 20px
+                rgba(16,185,129,0.20);
         }
 
-        footer {
-            background: #103d25;
-            color: #cbd9cf;
-            text-align: center;
-            padding: 22px;
-            font-size: 13px;
+        .btn-primary:hover {
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 13px 25px
+                rgba(16,185,129,0.28);
         }
 
-        /* LANGUAGE */
-        body.telugu .english {
-            display: none !important;
+        .btn-secondary {
+            background: #eef4ef;
+
+            color: #365448;
+
+            border:
+                1px solid #dbe7df;
         }
 
-        body:not(.telugu) .telugu {
-            display: none !important;
+        .btn-secondary:hover {
+            background: #dcfce7;
+
+            color: #047857;
         }
 
-        @media(max-width:800px) {
-            header {
-                padding: 15px 5%;
+
+        /* =====================================================
+           PRINT
+        ===================================================== */
+
+        @media print {
+
+            .topbar {
+                position: static;
             }
 
-            .result-grid,
+            .language-switch,
+            .bottom-actions {
+                display: none !important;
+            }
+
+            .page {
+                padding: 10px;
+            }
+
+            .image-card {
+                position: static;
+            }
+
+            body {
+                background: white;
+            }
+
+            .result-card,
+            .image-card {
+                box-shadow: none;
+            }
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media(max-width: 900px) {
+
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .image-card {
+                position: static;
+            }
+        }
+
+
+        @media(max-width: 600px) {
+
+            .topbar {
+                padding: 0 15px;
+
+                height: 62px;
+            }
+
+            .brand-text h2 {
+                font-size: 15px;
+            }
+
+            .brand-icon {
+                width: 39px;
+                height: 39px;
+
+                font-size: 20px;
+            }
+
+            .page {
+                padding:
+                    25px 15px 45px;
+            }
+
+            .result-card {
+                padding:
+                    20px;
+            }
+
+            .image-card {
+                padding:
+                    13px;
+            }
+
             .info-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns:
+                    1fr;
             }
 
-            .steps {
-                grid-template-columns: 1fr;
+            .detail-content {
+                padding-left:
+                    0;
             }
 
-            .heading h1 {
-                font-size: 27px;
+            .bottom-actions {
+                flex-direction:
+                    column;
             }
 
-            .result-card h2 {
-                font-size: 28px;
+            .btn {
+                width:
+                    100%;
             }
 
-            .leaf-image {
-                height: 280px;
+            .language-switch button {
+                padding:
+                    6px 9px;
             }
         }
 
-        @media(max-width:500px) {
-            .container {
-                width: 94%;
-            }
-
-            .logo h2 {
-                font-size: 17px;
-            }
-
-            .header-actions {
-                gap: 5px;
-            }
-
-            .back-btn,
-            .lang-btn {
-                padding: 8px 9px;
-                font-size: 12px;
-            }
-
-            .card,
-            .info-card {
-                padding: 18px;
-            }
-        }
     </style>
 </head>
 
+
 <body>
 
-<header>
 
-    <div class="logo">
+    <!-- =====================================================
+         TOP BAR
+    ====================================================== -->
 
-        <div class="logo-icon">🌱</div>
+    <header class="topbar">
 
-        <div>
-            <h2>AI Crop Doctor</h2>
+        <div class="brand">
 
-            <p>
-                <span class="english">Smart Agriculture</span>
-                <span class="telugu">స్మార్ట్ వ్యవసాయం</span>
-            </p>
-        </div>
-
-    </div>
-
-
-    <!-- LANGUAGE BUTTON -->
-    <div class="header-actions">
-
-        <button
-            type="button"
-            class="lang-btn"
-            id="languageButton"
-            onclick="toggleLanguage()"
-        >
-            🌐 <span id="languageText">తెలుగు</span>
-        </button>
-
-        <a href="/#scan" class="back-btn">
-
-            <span class="english">
-                ← New Scan
-            </span>
-
-            <span class="telugu">
-                ← కొత్త స్కాన్
-            </span>
-
-        </a>
-
-    </div>
-
-</header>
-
-
-<main class="container">
-
-    <div class="heading">
-
-        <div class="badge">
-
-            🌿
-
-            <span class="english">
-                CROP HEALTH REPORT
-            </span>
-
-            <span class="telugu">
-                పంట ఆరోగ్య నివేదిక
-            </span>
-
-        </div>
-
-
-        <h1>
-
-            <span class="english">
-                Your Crop Health Result
-            </span>
-
-            <span class="telugu">
-                మీ పంట ఆరోగ్య ఫలితం
-            </span>
-
-        </h1>
-
-
-        <p>
-
-            <span class="english">
-                Simple AI-assisted information for better crop care
-            </span>
-
-            <span class="telugu">
-                పంటను మెరుగ్గా చూసుకోవడానికి సులభమైన AI సమాచారం
-            </span>
-
-        </p>
-
-    </div>
-
-
-    <div class="result-grid">
-
-
-        <!-- IMAGE -->
-
-        <div class="card image-card">
-
-            <h3>
-
-                <span class="english">
-                    📷 Your Leaf Image
-                </span>
-
-                <span class="telugu">
-                    📷 మీ ఆకు చిత్రం
-                </span>
-
-            </h3>
-
-            <img
-                src="{{ image_url }}"
-                class="leaf-image"
-                alt="Uploaded crop leaf"
-            >
-
-        </div>
-
-
-        <!-- RESULT -->
-
-        <div class="card result-card">
-
-            <div class="status">
-
-                {% if status == "Healthy" %}
-
-                    <span class="english">
-                        🌿 Healthy
-                    </span>
-
-                    <span class="telugu">
-                        🌿 ఆరోగ్యంగా ఉంది
-                    </span>
-
-                {% elif status == "Disease Detected" %}
-
-                    <span class="english">
-                        ⚠️ Disease Detected
-                    </span>
-
-                    <span class="telugu">
-                        ⚠️ వ్యాధి గుర్తించబడింది
-                    </span>
-
-                {% else %}
-
-                    <span class="english">
-                        ⚠️ {{ status }}
-                    </span>
-
-                    <span class="telugu">
-                        ⚠️ ఫలితం
-                    </span>
-
-                {% endif %}
-
-            </div>
-
-
-            <h2>
-                {{ disease_name }}
-            </h2>
-
-
-            <p class="scientific">
-                {{ scientific_name }}
-            </p>
-
-
-            <div class="crop-box">
-
-                <span class="crop-label">
-
-                    <span class="english">
-                        🌱 CROP IDENTIFIED
-                    </span>
-
-                    <span class="telugu">
-                        🌱 గుర్తించిన పంట
-                    </span>
-
-                </span>
-
-                <strong>
-                    🍅 Tomato / టమాట
-                </strong>
-
-            </div>
-
-
-            <div class="confidence-title">
-
-                <span>
-
-                    <span class="english">
-                        AI Prediction Confidence
-                    </span>
-
-                    <span class="telugu">
-                        AI అంచనా నమ్మక స్థాయి
-                    </span>
-
-                </span>
-
-                <strong>
-                    {{ confidence }}%
-                </strong>
-
-            </div>
-
-
-            <div class="progress">
-
-                <div
-                    class="progress-bar"
-                    style="width: {{ confidence }}%;"
-                ></div>
-
-            </div>
-
-
-            <div class="warning">
-
-                ⚠️
-
-                <strong>
-
-                    <span class="english">
-                        Important:
-                    </span>
-
-                    <span class="telugu">
-                        ముఖ్యమైన విషయం:
-                    </span>
-
-                </strong>
-
-
-                <span class="english">
-
-                    This is an AI prediction, not a final agricultural diagnosis.
-                    Please compare the symptoms with your plant before taking action.
-
-                </span>
-
-
-                <span class="telugu">
-
-                    ఇది AI అంచనా మాత్రమే. ఇది తుది వ్యవసాయ నిర్ధారణ కాదు.
-                    ఏదైనా చర్య తీసుకునే ముందు మీ మొక్కలో కనిపించే లక్షణాలను పరిశీలించండి.
-
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- INFORMATION -->
-
-    <div class="info-grid">
-
-
-        <!-- WHAT -->
-
-        <div class="info-card">
-
-            <div class="info-icon green">
-                🩺
-            </div>
-
-            <h3>
-
-                <span class="english">
-                    What is this?
-                </span>
-
-                <span class="telugu">
-                    ఇది ఏమిటి?
-                </span>
-
-            </h3>
-
-
-            <p class="english">
-                {{ disease_name }} is a crop condition that can affect tomato plants.
-                Early identification can help farmers take suitable preventive action.
-            </p>
-
-
-            <p class="telugu">
-                {{ disease_name }} టమాట మొక్కలను ప్రభావితం చేసే పంట సమస్య.
-                ముందుగానే గుర్తించడం వల్ల రైతులు సరైన జాగ్రత్తలు తీసుకోవచ్చు.
-            </p>
-
-        </div>
-
-
-
-        <!-- CAUSE -->
-
-        <div class="info-card">
-
-            <div class="info-icon yellow">
-                ❓
-            </div>
-
-            <h3>
-
-                <span class="english">
-                    Why does it happen?
-                </span>
-
-                <span class="telugu">
-                    ఇది ఎందుకు వస్తుంది?
-                </span>
-
-            </h3>
-
-
-            <p class="english">
-                {{ cause }}
-            </p>
-
-
-            <p class="telugu">
-
-                చల్లని వాతావరణం, అధిక తేమ మరియు ఆకులపై ఎక్కువసేపు
-                నీరు ఉండటం వంటి పరిస్థితులు ఈ సమస్య వ్యాప్తికి కారణం కావచ్చు.
-
-            </p>
-
-        </div>
-
-
-
-        <!-- SYMPTOMS -->
-
-        <div class="info-card">
-
-            <div class="info-icon orange">
-                🔍
-            </div>
-
-            <h3>
-
-                <span class="english">
-                    Symptoms to check
-                </span>
-
-                <span class="telugu">
-                    గమనించాల్సిన లక్షణాలు
-                </span>
-
-            </h3>
-
-
-            <p class="english">
-                {{ symptoms }}
-            </p>
-
-
-            <p class="telugu">
-
-                ఆకులపై నల్లటి లేదా గోధుమ రంగు మచ్చలు,
-                మచ్చలు పెరగడం మరియు ఆకులు దెబ్బతినడం వంటి
-                లక్షణాలను గమనించండి.
-
-            </p>
-
-
-            <ul>
-
-                <li>
-                    <span class="english">
-                        Check nearby leaves
-                    </span>
-
-                    <span class="telugu">
-                        పక్కన ఉన్న ఆకులను పరిశీలించండి
-                    </span>
-                </li>
-
-
-                <li>
-                    <span class="english">
-                        Look for spreading spots
-                    </span>
-
-                    <span class="telugu">
-                        మచ్చలు వ్యాపిస్తున్నాయా చూడండి
-                    </span>
-                </li>
-
-
-                <li>
-                    <span class="english">
-                        Check the underside of leaves
-                    </span>
-
-                    <span class="telugu">
-                        ఆకుల కింది భాగాన్ని పరిశీలించండి
-                    </span>
-                </li>
-
-            </ul>
-
-        </div>
-
-
-
-        <!-- ACTION -->
-
-        <div class="info-card">
-
-            <div class="info-icon blue">
+            <div class="brand-icon">
                 🌿
             </div>
 
-            <h3>
+            <div class="brand-text">
 
-                <span class="english">
-                    What should you do?
+                <h2>
+                    AI Crop Doctor
+                </h2>
+
+                <span>
+                    SMART CROP DIAGNOSIS
                 </span>
 
-                <span class="telugu">
-                    ఇప్పుడు ఏం చేయాలి?
-                </span>
-
-            </h3>
-
-
-            <p class="english">
-                {{ action }}
-            </p>
-
-
-            <p class="telugu">
-
-                ప్రభావిత మొక్కలను జాగ్రత్తగా పరిశీలించండి.
-                పక్క మొక్కలకు కూడా ఇదే సమస్య ఉందా చూడండి.
-                ఎక్కువగా దెబ్బతిన్న ఆకులను తొలగించి పంటను గమనిస్తూ ఉండండి.
-
-            </p>
-
-
-            <ul>
-
-                <li>
-                    <span class="english">
-                        Inspect nearby plants
-                    </span>
-
-                    <span class="telugu">
-                        పక్క మొక్కలను పరిశీలించండి
-                    </span>
-                </li>
-
-
-                <li>
-                    <span class="english">
-                        Keep the crop area clean
-                    </span>
-
-                    <span class="telugu">
-                        పంట ప్రాంతాన్ని శుభ్రంగా ఉంచండి
-                    </span>
-                </li>
-
-
-                <li>
-                    <span class="english">
-                        Monitor the plant regularly
-                    </span>
-
-                    <span class="telugu">
-                        మొక్కను క్రమం తప్పకుండా గమనించండి
-                    </span>
-                </li>
-
-            </ul>
-
-        </div>
-
-
-
-        <!-- TREATMENT -->
-
-        <div class="info-card">
-
-            <div class="info-icon green">
-                💊
             </div>
 
-            <h3>
-
-                <span class="english">
-                    Treatment / Management
-                </span>
-
-                <span class="telugu">
-                    చికిత్స / నిర్వహణ
-                </span>
-
-            </h3>
-
-
-            <p class="english">
-                {{ treatment }}
-            </p>
-
-
-            <p class="telugu">
-
-                వ్యాధి ఎక్కువగా వ్యాపిస్తే స్థానిక వ్యవసాయ నిపుణుడిని
-                సంప్రదించి సరైన చికిత్స గురించి తెలుసుకోండి.
-                ఏదైనా వ్యవసాయ మందును ఉపయోగించే ముందు లేబుల్ సూచనలు
-                మరియు నిపుణుల సలహాను పాటించండి.
-
-            </p>
-
         </div>
 
 
+        <div class="language-switch">
 
-        <!-- PREVENTION -->
+            <button
+                id="englishBtn"
+                class="active"
+                onclick="setLanguage('en')"
+            >
+                English
+            </button>
 
-        <div class="info-card">
+            <button
+                id="teluguBtn"
+                onclick="setLanguage('te')"
+            >
+                తెలుగు
+            </button>
 
-            <div class="info-icon yellow">
-                🛡️
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         PAGE
+    ====================================================== -->
+
+    <main class="page">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <div class="page-tag">
+                ✨ AI ANALYSIS COMPLETE
             </div>
 
-            <h3>
+            <h1 id="pageTitle">
+                Crop Disease
+                <span>Analysis</span>
+            </h1>
 
-                <span class="english">
-                    How to prevent it
-                </span>
-
-                <span class="telugu">
-                    ఎలా నివారించాలి?
-                </span>
-
-            </h3>
-
-
-            <p class="english">
-                {{ prevention }}
-            </p>
-
-
-            <p class="telugu">
-
-                మొక్కల మధ్య సరైన దూరం ఉంచండి.
-                గాలి బాగా ప్రసరించేలా చూడండి.
-                ఆకులు ఎక్కువసేపు తడిగా ఉండకుండా జాగ్రత్త వహించండి.
-
+            <p id="pageSubtitle">
+                AI-powered analysis of your uploaded crop image.
             </p>
 
         </div>
 
-    </div>
 
 
+        <!-- =================================================
+             RESULT GRID
+        ================================================== -->
 
-    <!-- ACTION PLAN -->
-
-    <section class="action-section">
-
-        <h2>
-
-            <span class="english">
-                🌾 Your 3-Step Farmer Action Plan
-            </span>
-
-            <span class="telugu">
-                🌾 రైతు కోసం 3 దశల కార్యాచరణ
-            </span>
-
-        </h2>
+        <div class="result-grid">
 
 
-        <div class="steps">
+            <!-- =================================================
+                 IMAGE CARD
+            ================================================== -->
 
+            <section class="image-card">
 
-            <div class="step">
+                <div class="image-title">
 
-                <div class="step-number">
-                    01
+                    <h3 id="uploadedTitle">
+                        Uploaded Image
+                    </h3>
+
+                    <span class="crop-badge">
+                        {{ crop_name }}
+                    </span>
+
                 </div>
 
-                <h3>
 
-                    <span class="english">
-                        Observe
-                    </span>
+                <div class="image-container">
 
-                    <span class="telugu">
-                        గమనించండి
-                    </span>
+                    <img
+                        src="{{ image_url }}"
+                        alt="Uploaded crop image"
+                    >
 
-                </h3>
-
-                <p class="english">
-
-                    Carefully check the affected leaf
-                    and nearby plants for similar symptoms.
-
-                </p>
-
-                <p class="telugu">
-
-                    ప్రభావిత ఆకు మరియు పక్క మొక్కలను
-                    జాగ్రత్తగా పరిశీలించండి.
-
-                </p>
-
-            </div>
-
-
-
-            <div class="step">
-
-                <div class="step-number">
-                    02
                 </div>
 
-                <h3>
 
-                    <span class="english">
-                        Take Action
-                    </span>
-
-                    <span class="telugu">
-                        చర్య తీసుకోండి
-                    </span>
-
-                </h3>
-
-                <p class="english">
-
-                    Follow suitable crop-care practices
-                    and remove badly affected plant material when appropriate.
-
-                </p>
-
-                <p class="telugu">
-
-                    సరైన పంట సంరక్షణ పద్ధతులను పాటించండి.
-                    ఎక్కువగా దెబ్బతిన్న భాగాలను అవసరమైతే తొలగించండి.
-
-                </p>
-
-            </div>
-
-
-
-            <div class="step">
-
-                <div class="step-number">
-                    03
+                <div
+                    class="image-caption"
+                    id="imageCaption"
+                >
+                    Image analyzed by AI Crop Doctor
                 </div>
 
-                <h3>
+            </section>
 
-                    <span class="english">
-                        Monitor
+
+
+            <!-- =================================================
+                 RESULT CARD
+            ================================================== -->
+
+            <section class="result-card">
+
+
+                <!-- DISEASE HEADER -->
+
+                <div class="disease-header">
+
+                    <div class="status-badge">
+
+                        <span class="status-dot"></span>
+
+                        <span id="statusBadgeText">
+                            Detection Complete
+                        </span>
+
+                    </div>
+
+
+                    <h2 id="diseaseName">
+                        {{ disease_name }}
+                    </h2>
+
+
+                    <div
+                        class="scientific-name"
+                        id="scientificName"
+                    >
+                        {{ scientific_name }}
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     INFO GRID
+                ================================================== -->
+
+                <div class="info-grid">
+
+
+                    <div class="info-box">
+
+                        <span
+                            class="info-label"
+                            id="statusLabel"
+                        >
+                            Detection Status
+                        </span>
+
+                        <div
+                            class="info-value"
+                            id="statusValue"
+                        >
+                            {{ status }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <span
+                            class="info-label"
+                            id="severityLabel"
+                        >
+                            Severity
+                        </span>
+
+                        <div
+                            class="info-value"
+                            id="severityValue"
+                        >
+                            {{ severity }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     CONFIDENCE
+                ================================================== -->
+
+                <div class="confidence-section">
+
+                    <div class="confidence-top">
+
+                        <span
+                            class="confidence-title"
+                            id="confidenceTitle"
+                        >
+                            AI Confidence
+                        </span>
+
+                        <span class="confidence-value">
+                            {{ confidence }}%
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar"
+                            id="confidenceBar"
+                        ></div>
+
+                    </div>
+
+
+                    <div
+                        class="confidence-note"
+                        id="confidenceNote"
+                    >
+                        The confidence score indicates how strongly
+                        the AI model supports this prediction.
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     POSSIBLE CAUSE
+                ================================================== -->
+
+                <div class="detail-section">
+
+                    <div class="detail-heading">
+
+                        <div class="detail-icon">
+                            🔬
+                        </div>
+
+                        <h3 id="causeHeading">
+                            Possible Cause
+                        </h3>
+
+                    </div>
+
+                    <div
+                        class="detail-content"
+                        id="causeContent"
+                    >
+                        {{ cause }}
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     SYMPTOMS
+                ================================================== -->
+
+                <div class="detail-section">
+
+                    <div class="detail-heading">
+
+                        <div class="detail-icon">
+                            🍃
+                        </div>
+
+                        <h3 id="symptomsHeading">
+                            Symptoms
+                        </h3>
+
+                    </div>
+
+                    <div
+                        class="detail-content"
+                        id="symptomsContent"
+                    >
+                        {{ symptoms }}
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     RECOMMENDED ACTION
+                ================================================== -->
+
+                <div class="action-box">
+
+                    <h3 id="actionHeading">
+                        Recommended Action
+                    </h3>
+
+                    <p id="actionContent">
+                        {{ action }}
+                    </p>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     TREATMENT
+                ================================================== -->
+
+                <div class="detail-section">
+
+                    <div class="detail-heading">
+
+                        <div class="detail-icon">
+                            💊
+                        </div>
+
+                        <h3 id="treatmentHeading">
+                            Treatment
+                        </h3>
+
+                    </div>
+
+                    <div
+                        class="detail-content"
+                        id="treatmentContent"
+                    >
+                        {{ treatment }}
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     PREVENTION
+                ================================================== -->
+
+                <div class="detail-section">
+
+                    <div class="detail-heading">
+
+                        <div class="detail-icon">
+                            🛡️
+                        </div>
+
+                        <h3 id="preventionHeading">
+                            Prevention
+                        </h3>
+
+                    </div>
+
+                    <div
+                        class="detail-content"
+                        id="preventionContent"
+                    >
+                        {{ prevention }}
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     IMPORTANT NOTE
+                ================================================== -->
+
+                <div class="important-note">
+
+                    <strong id="importantTitle">
+                        Important Note:
+                    </strong>
+
+                    <span id="importantContent">
+                        AI predictions are intended as a helpful
+                        crop-health reference. For serious crop
+                        problems, consult a qualified agricultural
+                        expert.
                     </span>
 
-                    <span class="telugu">
-                        పర్యవేక్షించండి
-                    </span>
+                </div>
 
-                </h3>
 
-                <p class="english">
 
-                    Check your crop regularly and watch
-                    whether the symptoms are spreading.
+                <!-- =================================================
+                     BUTTONS
+                ================================================== -->
 
-                </p>
+                <div class="bottom-actions">
 
-                <p class="telugu">
+                    <a
+                        href="/"
+                        class="btn btn-primary"
+                        id="newScanBtn"
+                    >
+                        🔄 New Scan
+                    </a>
 
-                    పంటను క్రమం తప్పకుండా పరిశీలిస్తూ
-                    లక్షణాలు వ్యాపిస్తున్నాయా గమనించండి.
 
-                </p>
+                    <button
+                        onclick="window.print()"
+                        class="btn btn-secondary"
+                        id="printBtn"
+                    >
+                        🖨️ Print Report
+                    </button>
 
-            </div>
+                </div>
+
+
+            </section>
 
         </div>
 
-    </section>
+    </main>
 
 
 
-    <!-- TIP -->
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
 
-    <div class="tip">
+    <script>
 
-        <h3>
+        /* =====================================================
+           RESULT DATA FROM FLASK
+        ===================================================== */
 
-            💡
+        const resultData = {
 
-            <span class="english">
-                Farmer Tip
-            </span>
+            diseaseName: {
+                en: {{ disease_name|tojson }},
+                te: {{ disease_name_te|tojson }}
+            },
 
-            <span class="telugu">
-                రైతు సూచన
-            </span>
+            scientificName: {
+                en: {{ scientific_name|tojson }},
+                te: {{ scientific_name_te|tojson }}
+            },
 
-        </h3>
+            status: {
+                en: {{ status|tojson }},
+                te: {{ status_te|tojson }}
+            },
 
+            severity: {
+                en: {{ severity|tojson }},
+                te: {{ severity_te|tojson }}
+            },
 
-        <p class="english">
+            cause: {
+                en: {{ cause|tojson }},
+                te: {{ cause_te|tojson }}
+            },
 
-            Regular crop monitoring can help you notice
-            disease symptoms early. If symptoms spread rapidly
-            or you are unsure about treatment, consult a qualified
-            local agriculture expert.
+            symptoms: {
+                en: {{ symptoms|tojson }},
+                te: {{ symptoms_te|tojson }}
+            },
 
-        </p>
+            action: {
+                en: {{ action|tojson }},
+                te: {{ action_te|tojson }}
+            },
 
+            treatment: {
+                en: {{ treatment|tojson }},
+                te: {{ treatment_te|tojson }}
+            },
 
-        <p class="telugu">
+            prevention: {
+                en: {{ prevention|tojson }},
+                te: {{ prevention_te|tojson }}
+            },
 
-            పంటను క్రమం తప్పకుండా పరిశీలించడం వల్ల వ్యాధి లక్షణాలను
-            ముందుగానే గుర్తించవచ్చు. లక్షణాలు వేగంగా వ్యాపిస్తే లేదా
-            చికిత్స గురించి సందేహం ఉంటే స్థానిక వ్యవసాయ నిపుణుడిని సంప్రదించండి.
+            cropName: {
+                en: {{ crop_name|tojson }},
+                te: {{ crop_name_te|tojson }}
+            }
 
-        </p>
-
-    </div>
-
-
-
-    <!-- NEW SCAN -->
-
-    <div class="bottom">
-
-        <a href="/#scan" class="new-scan">
-
-            <span class="english">
-                🔄 Analyze Another Leaf
-            </span>
-
-            <span class="telugu">
-                🔄 మరో ఆకును పరీక్షించండి
-            </span>
-
-        </a>
-
-
-        <p>
-
-            <span class="english">
-                Upload another crop image for a new AI-assisted analysis.
-            </span>
-
-            <span class="telugu">
-                కొత్త AI విశ్లేషణ కోసం మరో పంట చిత్రాన్ని అప్లోడ్ చేయండి.
-            </span>
-
-        </p>
-
-    </div>
-
-</main>
+        };
 
 
 
-<footer>
+        /* =====================================================
+           STATIC TRANSLATIONS
+        ===================================================== */
 
-    🌱 <strong>AI Crop Doctor</strong>
+        const translations = {
 
-    <span class="english">
-        — Smart tools for smarter agriculture
-    </span>
+            en: {
 
-    <span class="telugu">
-        — స్మార్ట్ వ్యవసాయం కోసం స్మార్ట్ టూల్స్
-    </span>
+                pageTitle:
+                    "Crop Disease Analysis",
 
-    <br><br>
+                pageSubtitle:
+                    "AI-powered analysis of your uploaded crop image.",
 
-    © 2026 AI Crop Doctor
+                uploadedTitle:
+                    "Uploaded Image",
 
-</footer>
+                imageCaption:
+                    "Image analyzed by AI Crop Doctor",
+
+                statusBadge:
+                    "Detection Complete",
+
+                statusLabel:
+                    "Detection Status",
+
+                severityLabel:
+                    "Severity",
+
+                confidenceTitle:
+                    "AI Confidence",
+
+                confidenceNote:
+                    "The confidence score indicates how strongly the AI model supports this prediction.",
+
+                causeHeading:
+                    "Possible Cause",
+
+                symptomsHeading:
+                    "Symptoms",
+
+                actionHeading:
+                    "Recommended Action",
+
+                treatmentHeading:
+                    "Treatment",
+
+                preventionHeading:
+                    "Prevention",
+
+                importantTitle:
+                    "Important Note:",
+
+                importantContent:
+                    "AI predictions are intended as a helpful crop-health reference. For serious crop problems, consult a qualified agricultural expert.",
+
+                newScan:
+                    "🔄 New Scan",
+
+                print:
+                    "🖨️ Print Report"
+
+            },
+
+
+            te: {
+
+                pageTitle:
+                    "పంట వ్యాధి విశ్లేషణ",
+
+                pageSubtitle:
+                    "మీరు అప్‌లోడ్ చేసిన పంట చిత్రాన్ని AI ద్వారా విశ్లేషించారు.",
+
+                uploadedTitle:
+                    "అప్‌లోడ్ చేసిన చిత్రం",
+
+                imageCaption:
+                    "AI Crop Doctor ద్వారా చిత్రాన్ని విశ్లేషించారు",
+
+                statusBadge:
+                    "గుర్తింపు పూర్తయింది",
+
+                statusLabel:
+                    "గుర్తింపు స్థితి",
+
+                severityLabel:
+                    "వ్యాధి తీవ్రత",
+
+                confidenceTitle:
+                    "AI నమ్మక స్థాయి",
+
+                confidenceNote:
+                    "ఈ శాతం AI మోడల్ ఇచ్చిన అంచనా ఎంత నమ్మకంగా ఉందో సూచిస్తుంది.",
+
+                causeHeading:
+                    "సంభవించే కారణం",
+
+                symptomsHeading:
+                    "లక్షణాలు",
+
+                actionHeading:
+                    "తీసుకోవాల్సిన చర్య",
+
+                treatmentHeading:
+                    "చికిత్స",
+
+                preventionHeading:
+                    "నివారణ",
+
+                importantTitle:
+                    "ముఖ్యమైన గమనిక:",
+
+                importantContent:
+                    "AI అంచనాలు పంట ఆరోగ్యానికి సహాయక సూచన మాత్రమే. తీవ్రమైన సమస్యలు ఉంటే వ్యవసాయ నిపుణుడిని సంప్రదించండి.",
+
+                newScan:
+                    "🔄 కొత్త స్కాన్",
+
+                print:
+                    "🖨️ రిపోర్ట్ ప్రింట్ చేయండి"
+
+            }
+
+        };
 
 
 
-<script>
+        /* =====================================================
+           LANGUAGE FUNCTION
+        ===================================================== */
 
-function toggleLanguage() {
+        function setLanguage(language) {
 
-    const body = document.body;
+            const t =
+                translations[language];
 
-    const button = document.getElementById("languageText");
+            document
+                .getElementById("pageTitle")
+                .innerHTML =
+                language === "en"
+                    ? `Crop Disease <span>Analysis</span>`
+                    : `పంట వ్యాధి <span>విశ్లేషణ</span>`;
 
-    const isTelugu = body.classList.toggle("telugu");
+            document
+                .getElementById("pageSubtitle")
+                .textContent =
+                t.pageSubtitle;
+
+            document
+                .getElementById("uploadedTitle")
+                .textContent =
+                t.uploadedTitle;
+
+            document
+                .getElementById("imageCaption")
+                .textContent =
+                t.imageCaption;
+
+            document
+                .getElementById("statusBadgeText")
+                .textContent =
+                t.statusBadge;
+
+            document
+                .getElementById("statusLabel")
+                .textContent =
+                t.statusLabel;
+
+            document
+                .getElementById("severityLabel")
+                .textContent =
+                t.severityLabel;
+
+            document
+                .getElementById("confidenceTitle")
+                .textContent =
+                t.confidenceTitle;
+
+            document
+                .getElementById("confidenceNote")
+                .textContent =
+                t.confidenceNote;
+
+            document
+                .getElementById("causeHeading")
+                .textContent =
+                t.causeHeading;
+
+            document
+                .getElementById("symptomsHeading")
+                .textContent =
+                t.symptomsHeading;
+
+            document
+                .getElementById("actionHeading")
+                .textContent =
+                t.actionHeading;
+
+            document
+                .getElementById("treatmentHeading")
+                .textContent =
+                t.treatmentHeading;
+
+            document
+                .getElementById("preventionHeading")
+                .textContent =
+                t.preventionHeading;
+
+            document
+                .getElementById("importantTitle")
+                .textContent =
+                t.importantTitle;
+
+            document
+                .getElementById("importantContent")
+                .textContent =
+                t.importantContent;
+
+            document
+                .getElementById("newScanBtn")
+                .textContent =
+                t.newScan;
+
+            document
+                .getElementById("printBtn")
+                .textContent =
+                t.print;
 
 
-    if (isTelugu) {
 
-        localStorage.setItem(
-            "cropLanguage",
-            "telugu"
-        );
+            /* Dynamic Result */
 
-        if (button) {
-            button.textContent = "English";
+            document
+                .getElementById("diseaseName")
+                .textContent =
+                resultData.diseaseName[language];
+
+            document
+                .getElementById("scientificName")
+                .textContent =
+                resultData.scientificName[language];
+
+            document
+                .getElementById("statusValue")
+                .textContent =
+                resultData.status[language];
+
+            document
+                .getElementById("severityValue")
+                .textContent =
+                resultData.severity[language];
+
+            document
+                .getElementById("causeContent")
+                .textContent =
+                resultData.cause[language];
+
+            document
+                .getElementById("symptomsContent")
+                .textContent =
+                resultData.symptoms[language];
+
+            document
+                .getElementById("actionContent")
+                .textContent =
+                resultData.action[language];
+
+            document
+                .getElementById("treatmentContent")
+                .textContent =
+                resultData.treatment[language];
+
+            document
+                .getElementById("preventionContent")
+                .textContent =
+                resultData.prevention[language];
+
+
+
+            /* Language Buttons */
+
+            document
+                .getElementById("englishBtn")
+                .classList
+                .toggle(
+                    "active",
+                    language === "en"
+                );
+
+            document
+                .getElementById("teluguBtn")
+                .classList
+                .toggle(
+                    "active",
+                    language === "te"
+                );
+
+
+
+            /* Save Language */
+
+            localStorage.setItem(
+                "cropDoctorLanguage",
+                language
+            );
         }
 
-    } else {
-
-        localStorage.setItem(
-            "cropLanguage",
-            "english"
-        );
-
-        if (button) {
-            button.textContent = "తెలుగు";
-        }
-
-    }
-
-}
 
 
-window.addEventListener(
-    "DOMContentLoaded",
-    function () {
+        /* =====================================================
+           INITIAL LANGUAGE
+        ===================================================== */
 
         const savedLanguage =
-            localStorage.getItem("cropLanguage");
+            localStorage.getItem(
+                "cropDoctorLanguage"
+            ) || "en";
 
-        const button =
-            document.getElementById("languageText");
+        setLanguage(savedLanguage);
 
 
-        if (savedLanguage === "telugu") {
 
-            document.body.classList.add("telugu");
+        /* =====================================================
+           CONFIDENCE BAR ANIMATION
+        ===================================================== */
 
-            if (button) {
-                button.textContent = "English";
+        window.addEventListener(
+            "load",
+            function () {
+
+                const bar =
+                    document.getElementById(
+                        "confidenceBar"
+                    );
+
+                const confidence =
+                    {{ confidence|tojson }};
+
+                setTimeout(
+                    function () {
+
+                        bar.style.width =
+                            confidence + "%";
+
+                    },
+                    250
+                );
+
             }
+        );
 
-        } else {
-
-            document.body.classList.remove("telugu");
-
-            if (button) {
-                button.textContent = "తెలుగు";
-            }
-
-        }
-
-    }
-);
-
-</script>
-
+    </script>
 
 </body>
+
 </html>

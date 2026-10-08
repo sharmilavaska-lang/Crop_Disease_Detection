@@ -2,530 +2,2092 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AI Multi-Crop Disease Detection</title>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        AI Crop Doctor
+    </title>
 
     <style>
 
+        /* =====================================================
+           RESET
+        ===================================================== */
+
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f4faf7;
-            color: #123b2b;
-        }
-
-        /* ================= HEADER ================= */
-
-        header {
-            height: 70px;
-            background: #075c45;
-            color: white;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            padding: 0 5%;
-
-            box-shadow: 0 2px 12px #0002;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-
-            font-weight: bold;
-        }
-
-        .logo-icon {
-            font-size: 30px;
-        }
-
-        .logo small {
-            display: block;
-            font-size: 12px;
-            font-weight: normal;
-            color: #d8eee7;
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-            gap: 28px;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .lang {
-            border: 1px solid #ffffff66;
-            border-radius: 18px;
-            padding: 7px 12px;
-            cursor: pointer;
-        }
-
-
-        /* ================= HERO ================= */
-
-        .hero {
-
-            max-width: 1250px;
-            margin: auto;
-
-            background: white;
-
-            display: grid;
-            grid-template-columns: 1fr 1.15fr;
-
-            min-height: 350px;
-        }
-
-        .hero-text {
-            padding: 48px 42px;
-        }
-
-        .hero h1 {
-            font-size: 38px;
-            line-height: 1.1;
-
-            color: #075c45;
-
-            margin-bottom: 18px;
-        }
-
-        .hero p {
-            font-size: 15px;
-            line-height: 1.6;
-
-            color: #557064;
-
-            max-width: 500px;
-        }
-
-
-        /* ================= TAGS ================= */
-
-        .tags {
-
-            display: flex;
-            gap: 10px;
-
-            flex-wrap: wrap;
-
-            margin: 22px 0;
-        }
-
-        .tag {
-
-            padding: 9px 13px;
-
-            border: 1px solid #d4e9e0;
-
-            border-radius: 9px;
-
-            background: #f7fcfa;
-
-            font-size: 12px;
-        }
-
-
-        /* ================= BUTTON ================= */
-
-        .primary {
-
-            display: inline-block;
-
-            background: #07855e;
-
-            color: white;
-
-            border: none;
-
-            border-radius: 9px;
-
-            padding: 14px 25px;
-
-            font-weight: bold;
-
-            cursor: pointer;
-
-            text-decoration: none;
-        }
-
-
-        /* ================= HERO IMAGE ================= */
-
-        .hero-img {
-
-            min-height: 350px;
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
 
             background:
+                #f6faf7;
 
-                url("https://images.unsplash.com/photo-1598514982901-ae627a7c9b8a?auto=format&fit=crop&w=1100&q=80")
+            color:
+                #17251b;
 
-                center / cover;
+            overflow-x: hidden;
         }
 
 
-        /* ================= CROPS ================= */
-
-        .crops {
-
-            max-width: 1250px;
-
-            margin: auto;
-
-            background: white;
-
-            border-top: 1px solid #dbece5;
-
-            display: grid;
-
-            grid-template-columns: repeat(8, 1fr);
-        }
-
-        .crop {
-
-            padding: 14px;
-
-            text-align: center;
-
-            border-right: 1px solid #e2eee9;
-
-            font-size: 12px;
-        }
-
-        .crop b {
-
-            display: block;
-
-            font-size: 25px;
-
-            margin-bottom: 5px;
+        button,
+        input,
+        textarea {
+            font-family: inherit;
         }
 
 
-        /* ================= SECTION ================= */
-
-        .section {
-
-            max-width: 1100px;
-
-            margin: 45px auto;
-
-            padding: 0 20px;
-        }
-
-        .section h2 {
-
-            text-align: center;
-
-            color: #075c45;
-
-            margin-bottom: 10px;
-        }
-
-        .section > p {
-
-            text-align: center;
-
-            color: #6a7c74;
-
-            margin-bottom: 25px;
+        button {
+            cursor: pointer;
         }
 
 
-        /* ================= SCANNER ================= */
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
 
-        .scanner {
+        .sidebar {
 
-            background: white;
+            position: fixed;
 
-            border: 1px solid #d8ebe3;
+            left: 0;
+            top: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #063b27,
+                    #075437
+                );
+
+            color: white;
+
+            padding: 25px 18px;
+
+            z-index: 1000;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 8px 10px 28px;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.12);
+        }
+
+
+        .brand-icon {
+
+            width: 48px;
+            height: 48px;
 
             border-radius: 15px;
 
-            padding: 28px;
+            background:
+                rgba(255,255,255,0.12);
 
-            box-shadow: 0 8px 30px #1a725015;
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 26px;
         }
 
-        .upload-grid {
+
+        .brand-text h2 {
+
+            font-size: 19px;
+
+            line-height: 1.2;
+        }
+
+
+        .brand-text span {
+
+            font-size: 11px;
+
+            color:
+                #a7f3d0;
+
+            letter-spacing:
+                1px;
+        }
+
+
+        .nav {
+
+            margin-top: 28px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+
+        .nav a {
+
+            color:
+                #d1fae5;
+
+            text-decoration: none;
+
+            padding: 13px 15px;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            font-size: 14px;
+
+            transition:
+                0.2s ease;
+        }
+
+
+        .nav a:hover {
+
+            background:
+                rgba(255,255,255,0.1);
+
+            color: white;
+
+            transform:
+                translateX(3px);
+        }
+
+
+        .sidebar-bottom {
+
+            margin-top: auto;
+
+            padding: 15px;
+
+            border-radius: 15px;
+
+            background:
+                rgba(255,255,255,0.08);
+
+            font-size: 12px;
+
+            line-height: 1.6;
+
+            color:
+                #d1fae5;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+
+            margin-left: 250px;
+
+            min-height: 100vh;
+        }
+
+
+        /* =====================================================
+           TOPBAR
+        ===================================================== */
+
+        .topbar {
+
+            height: 72px;
+
+            background:
+                rgba(255,255,255,0.94);
+
+            border-bottom:
+                1px solid #e5eee8;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding:
+                0 35px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 500;
+
+            backdrop-filter:
+                blur(12px);
+        }
+
+
+        .topbar-title {
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            color:
+                #14532d;
+        }
+
+
+        .language-switch {
+
+            display: flex;
+
+            gap: 5px;
+
+            background:
+                #f1f5f3;
+
+            padding: 4px;
+
+            border-radius: 10px;
+        }
+
+
+        .language-switch button {
+
+            border: none;
+
+            background: transparent;
+
+            padding: 7px 12px;
+
+            border-radius: 7px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            color:
+                #64748b;
+        }
+
+
+        .language-switch button.active {
+
+            background:
+                #166534;
+
+            color: white;
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .content {
+
+            max-width: 1400px;
+
+            margin: auto;
+
+            padding:
+                38px;
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
 
             display: grid;
 
-            grid-template-columns: 1.5fr .8fr;
+            grid-template-columns:
+                1.15fr
+                0.85fr;
 
-            gap: 25px;
+            gap: 35px;
+
+            align-items: center;
+
+            min-height: 480px;
+
+            padding:
+                35px;
+
+            border-radius: 30px;
+
+            background:
+
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(134,239,172,0.45),
+                    transparent 35%
+                ),
+
+                linear-gradient(
+                    135deg,
+                    #e8f8ee,
+                    #f9fffb
+                );
+
+            border:
+                1px solid #d7eee0;
+
+            overflow: hidden;
+
+            position: relative;
         }
 
 
-        /* ================= UPLOAD BOX ================= */
+        .hero-content {
 
-        .upload-box {
+            position: relative;
 
-            border: 2px dashed #b8d9cd;
-
-            border-radius: 14px;
-
-            padding: 45px 20px;
-
-            text-align: center;
+            z-index: 2;
         }
 
-        .cloud {
 
-            font-size: 48px;
-        }
+        .hero-tag {
 
-        .upload-box h3 {
+            display: inline-flex;
 
-            margin: 10px 0;
+            align-items: center;
 
-            color: #164c3b;
-        }
+            gap: 7px;
 
-        .upload-box p {
+            background:
+                #dcfce7;
 
-            color: #71827b;
+            color:
+                #166534;
+
+            padding:
+                8px 12px;
+
+            border-radius: 999px;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing:
+                0.7px;
 
             margin-bottom: 18px;
         }
 
-        input[type="file"] {
 
-            display: none;
-        }
+        .hero h1 {
 
-        .choose {
+            font-size:
+                clamp(38px, 5vw, 64px);
 
-            display: inline-block;
+            line-height:
+                1.02;
 
-            background: #07855e;
+            color:
+                #0b3d25;
 
-            color: white;
-
-            padding: 13px 24px;
-
-            border-radius: 8px;
-
-            cursor: pointer;
-
-            font-weight: bold;
+            margin-bottom:
+                18px;
         }
 
 
-        /* ================= IMAGE PREVIEW ================= */
+        .hero h1 span {
 
-        .preview {
-
-            display: none;
-
-            margin: 20px auto 0;
-
-            max-width: 280px;
-
-            max-height: 210px;
-
-            border-radius: 10px;
-
-            object-fit: cover;
+            color:
+                #16a34a;
         }
 
 
-        /* ================= ANALYZE BUTTON ================= */
+        .hero p {
 
-        .analyze {
+            max-width: 600px;
 
-            margin-top: 18px;
+            color:
+                #587064;
 
-            background: #075c45;
+            font-size:
+                16px;
 
-            color: white;
+            line-height:
+                1.75;
+
+            margin-bottom:
+                25px;
+        }
+
+
+        .hero-buttons {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+        }
+
+
+        .primary-btn {
 
             border: none;
 
-            padding: 13px 28px;
-
-            border-radius: 8px;
-
-            font-weight: bold;
-
-            cursor: pointer;
-        }
-
-
-        /* ================= AVAILABLE CROPS ================= */
-
-        .available {
-
-            background: #f7fcfa;
-
-            border: 1px solid #d8ebe3;
-
-            border-radius: 12px;
-
-            padding: 20px;
-        }
-
-        .available h3 {
-
-            margin-bottom: 15px;
-
-            color: #075c45;
-        }
-
-        .mini-crops {
-
-            display: grid;
-
-            grid-template-columns: repeat(4, 1fr);
-
-            gap: 10px;
-        }
-
-        .mini {
-
-            background: white;
-
-            border: 1px solid #e1eee9;
-
-            border-radius: 8px;
-
-            padding: 10px;
-
-            text-align: center;
-
-            font-size: 11px;
-        }
-
-        .mini b {
-
-            display: block;
-
-            font-size: 23px;
-        }
-
-
-        /* ================= NOTE ================= */
-
-        .note {
-
-            margin-top: 18px;
-
-            padding: 14px;
-
-            background: #e9f8ef;
-
-            border-radius: 10px;
-
-            font-size: 12px;
-
-            line-height: 1.5;
-        }
-
-
-        /* ================= HOW IT WORKS ================= */
-
-        .steps {
-
-            display: grid;
-
-            grid-template-columns: repeat(3, 1fr);
-
-            gap: 18px;
-        }
-
-        .step {
-
-            background: white;
-
-            padding: 25px;
-
-            border-radius: 12px;
-
-            border: 1px solid #dcece6;
-
-            text-align: center;
-        }
-
-        .step-icon {
-
-            font-size: 35px;
-        }
-
-        .step h3 {
-
-            margin: 10px;
-
-            color: #075c45;
-        }
-
-        .step p {
-
-            color: #71827b;
-
-            font-size: 14px;
-
-            line-height: 1.5;
-        }
-
-
-        /* ================= FOOTER ================= */
-
-        footer {
-
-            background: #075c45;
+            background:
+                #15803d;
 
             color: white;
 
-            text-align: center;
+            padding:
+                14px 22px;
 
-            padding: 25px;
+            border-radius:
+                13px;
 
-            margin-top: 50px;
+            font-weight:
+                800;
+
+            box-shadow:
+                0 10px 25px
+                rgba(21,128,61,0.22);
+
+            transition:
+                0.2s ease;
         }
 
 
-        /* ================= MOBILE ================= */
+        .primary-btn:hover {
 
-        @media(max-width:800px) {
+            transform:
+                translateY(-2px);
 
-            nav {
-                gap: 10px;
+            background:
+                #166534;
+        }
+
+
+        .secondary-btn {
+
+            border:
+                1px solid #bbf7d0;
+
+            background:
+                white;
+
+            color:
+                #166534;
+
+            padding:
+                13px 21px;
+
+            border-radius:
+                13px;
+
+            font-weight:
+                700;
+        }
+
+
+        /* =====================================================
+           HERO SCANNER
+        ===================================================== */
+
+        .scanner-area {
+
+            min-height:
+                360px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+        }
+
+
+        .scanner {
+
+            width:
+                min(330px, 75vw);
+
+            aspect-ratio:
+                1;
+
+            border-radius:
+                50%;
+
+            position:
+                relative;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            background:
+
+                radial-gradient(
+                    circle,
+                    rgba(34,197,94,0.17),
+                    rgba(3,20,13,0.98) 66%
+                );
+
+            box-shadow:
+
+                0 0 50px
+                rgba(22,163,74,0.25),
+
+                inset 0 0 60px
+                rgba(34,197,94,0.12);
+
+            overflow:
+                hidden;
+        }
+
+
+        .scanner::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 10%;
+
+            border:
+                1px solid
+                rgba(74,222,128,0.35);
+
+            border-radius:
+                50%;
+        }
+
+
+        .scanner::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 22%;
+
+            border:
+                1px solid
+                rgba(74,222,128,0.2);
+
+            border-radius:
+                50%;
+        }
+
+
+        .scanner-grid {
+
+            position:
+                absolute;
+
+            inset: 0;
+
+            opacity:
+                0.25;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(74,222,128,0.25) 1px,
+                    transparent 1px
+                ),
+
+                linear-gradient(
+                    90deg,
+                    rgba(74,222,128,0.25) 1px,
+                    transparent 1px
+                );
+
+            background-size:
+                35px 35px;
+
+            border-radius:
+                50%;
+        }
+
+
+        .scanner-ring {
+
+            position:
+                absolute;
+
+            border:
+                1px solid
+                rgba(74,222,128,0.45);
+
+            border-radius:
+                50%;
+
+            animation:
+                scannerRotate
+                8s linear infinite;
+        }
+
+
+        .ring-one {
+
+            inset:
+                15%;
+
+            border-left-color:
+                transparent;
+
+            border-bottom-color:
+                transparent;
+        }
+
+
+        .ring-two {
+
+            inset:
+                28%;
+
+            animation-duration:
+                5s;
+
+            animation-direction:
+                reverse;
+
+            border-right-color:
+                transparent;
+        }
+
+
+        .ring-three {
+
+            inset:
+                39%;
+
+            animation-duration:
+                3s;
+
+            border-top-color:
+                transparent;
+        }
+
+
+        @keyframes scannerRotate {
+
+            from {
+                transform:
+                    rotate(0deg);
             }
+
+            to {
+                transform:
+                    rotate(360deg);
+            }
+        }
+
+
+        .scan-line {
+
+            position:
+                absolute;
+
+            width:
+                76%;
+
+            height:
+                2px;
+
+            background:
+                #4ade80;
+
+            box-shadow:
+                0 0 15px
+                #4ade80;
+
+            animation:
+                scanMove 2.6s
+                ease-in-out infinite;
+        }
+
+
+        @keyframes scanMove {
+
+            0% {
+                transform:
+                    translateY(-85px);
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 1;
+            }
+
+            50% {
+                transform:
+                    translateY(85px);
+            }
+
+            85% {
+                opacity: 1;
+            }
+
+            100% {
+                transform:
+                    translateY(-85px);
+                opacity: 0;
+            }
+        }
+
+
+        .scanner-leaf {
+
+            font-size:
+                65px;
+
+            filter:
+                drop-shadow(
+                    0 0 18px
+                    rgba(74,222,128,0.65)
+                );
+
+            animation:
+                leafPulse 2s ease-in-out infinite;
+        }
+
+
+        @keyframes leafPulse {
+
+            0%,
+            100% {
+                transform:
+                    scale(1);
+            }
+
+            50% {
+                transform:
+                    scale(1.08);
+            }
+        }
+
+
+        .scanner-label {
+
+            position:
+                absolute;
+
+            bottom:
+                22px;
+
+            left:
+                0;
+
+            right:
+                0;
+
+            text-align:
+                center;
+
+            color:
+                #86efac;
+
+            font-size:
+                10px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                2px;
+        }
+
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .section {
+
+            margin-top:
+                55px;
+        }
+
+
+        .section-heading {
+
+            margin-bottom:
+                24px;
+        }
+
+
+        .section-heading span {
+
+            color:
+                #16a34a;
+
+            font-size:
+                11px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                1px;
+        }
+
+
+        .section-heading h2 {
+
+            margin-top:
+                6px;
+
+            font-size:
+                30px;
+
+            color:
+                #123b25;
+        }
+
+
+        .section-heading p {
+
+            margin-top:
+                8px;
+
+            color:
+                #6b7f72;
+        }
+
+
+        /* =====================================================
+           FEATURE CARDS
+        ===================================================== */
+
+        .features {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap:
+                18px;
+        }
+
+
+        .feature-card {
+
+            background:
+                white;
+
+            border:
+                1px solid #e3eee6;
+
+            border-radius:
+                20px;
+
+            padding:
+                23px;
+
+            transition:
+                0.25s ease;
+        }
+
+
+        .feature-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            box-shadow:
+                0 15px 35px
+                rgba(0,0,0,0.06);
+        }
+
+
+        .feature-icon {
+
+            width:
+                50px;
+
+            height:
+                50px;
+
+            border-radius:
+                14px;
+
+            background:
+                #ecfdf5;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            font-size:
+                24px;
+
+            margin-bottom:
+                15px;
+        }
+
+
+        .feature-card h3 {
+
+            font-size:
+                17px;
+
+            margin-bottom:
+                8px;
+        }
+
+
+        .feature-card p {
+
+            color:
+                #718078;
+
+            font-size:
+                13px;
+
+            line-height:
+                1.6;
+        }
+
+
+        /* =====================================================
+           SCANNER UPLOAD
+        ===================================================== */
+
+        .upload-card {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            gap:
+                25px;
+
+            background:
+                white;
+
+            border:
+                1px solid #e1eee5;
+
+            border-radius:
+                25px;
+
+            padding:
+                28px;
+
+            box-shadow:
+                0 15px 40px
+                rgba(0,0,0,0.04);
+        }
+
+
+        .upload-box {
+
+            border:
+                2px dashed #b7d9c1;
+
+            border-radius:
+                20px;
+
+            min-height:
+                320px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                25px;
+
+            text-align:
+                center;
+
+            transition:
+                0.2s ease;
+
+            background:
+                #fbfefc;
+        }
+
+
+        .upload-box:hover {
+
+            border-color:
+                #16a34a;
+
+            background:
+                #f0fdf4;
+        }
+
+
+        .upload-icon {
+
+            font-size:
+                50px;
+
+            margin-bottom:
+                14px;
+        }
+
+
+        .upload-box h3 {
+
+            margin-bottom:
+                8px;
+        }
+
+
+        .upload-box p {
+
+            color:
+                #718078;
+
+            font-size:
+                13px;
+
+            margin-bottom:
+                20px;
+        }
+
+
+        .file-input {
+
+            display:
+                none;
+        }
+
+
+        .upload-label {
+
+            display:
+                inline-flex;
+
+            padding:
+                12px 20px;
+
+            border-radius:
+                12px;
+
+            background:
+                #15803d;
+
+            color:
+                white;
+
+            font-weight:
+                800;
+
+            cursor:
+                pointer;
+        }
+
+
+        .preview-area {
+
+            min-height:
+                320px;
+
+            border-radius:
+                20px;
+
+            background:
+                #f8faf9;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            overflow:
+                hidden;
+
+            border:
+                1px solid #e6eee8;
+
+            position:
+                relative;
+        }
+
+
+        .preview-placeholder {
+
+            color:
+                #8a9a90;
+
+            text-align:
+                center;
+
+            padding:
+                20px;
+
+            font-size:
+                14px;
+        }
+
+
+        #imagePreview {
+
+            max-width:
+                100%;
+
+            max-height:
+                300px;
+
+            object-fit:
+                contain;
+
+            display:
+                none;
+
+            border-radius:
+                14px;
+        }
+
+
+        .analyze-button {
+
+            width:
+                100%;
+
+            margin-top:
+                18px;
+
+            padding:
+                15px;
+
+            border:
+                none;
+
+            border-radius:
+                13px;
+
+            background:
+                #15803d;
+
+            color:
+                white;
+
+            font-size:
+                15px;
+
+            font-weight:
+                800;
+
+            transition:
+                0.2s ease;
+        }
+
+
+        .analyze-button:hover {
+
+            background:
+                #166534;
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .analyze-button:disabled {
+
+            opacity:
+                0.5;
+
+            cursor:
+                not-allowed;
+        }
+
+
+        /* =====================================================
+           AI ASSISTANT
+        ===================================================== */
+
+        .ai-assistant-card {
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #f0fdf4
+                );
+
+            border:
+                1px solid #cdebd7;
+
+            border-radius:
+                28px;
+
+            padding:
+                30px;
+
+            box-shadow:
+                0 20px 50px
+                rgba(0,0,0,0.06);
+        }
+
+
+        .ai-header {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                16px;
+
+            margin-bottom:
+                22px;
+        }
+
+
+        .ai-avatar {
+
+            width:
+                62px;
+
+            height:
+                62px;
+
+            flex-shrink:
+                0;
+
+            border-radius:
+                18px;
+
+            background:
+                #dcfce7;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            font-size:
+                30px;
+        }
+
+
+        .ai-label {
+
+            color:
+                #16a34a;
+
+            font-size:
+                10px;
+
+            font-weight:
+                900;
+
+            letter-spacing:
+                1.5px;
+        }
+
+
+        .ai-header h2 {
+
+            margin:
+                4px 0;
+
+            font-size:
+                27px;
+
+            color:
+                #123b25;
+        }
+
+
+        .ai-header p {
+
+            color:
+                #6b7f72;
+
+            font-size:
+                14px;
+        }
+
+
+        .ai-question-box {
+
+            background:
+                white;
+
+            border:
+                1px solid #dce9df;
+
+            border-radius:
+                18px;
+
+            padding:
+                15px;
+        }
+
+
+        #aiQuestion {
+
+            width:
+                100%;
+
+            min-height:
+                115px;
+
+            border:
+                none;
+
+            outline:
+                none;
+
+            resize:
+                vertical;
+
+            font-size:
+                15px;
+
+            line-height:
+                1.7;
+
+            color:
+                #1e293b;
+
+            background:
+                transparent;
+        }
+
+
+        #aiQuestion::placeholder {
+
+            color:
+                #94a3b8;
+        }
+
+
+        .ai-actions {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            gap:
+                10px;
+
+            margin-top:
+                10px;
+        }
+
+
+        .ai-mic-button,
+        .ai-ask-button {
+
+            border:
+                none;
+
+            border-radius:
+                12px;
+
+            padding:
+                12px 19px;
+
+            font-weight:
+                800;
+
+            font-size:
+                13px;
+        }
+
+
+        .ai-mic-button {
+
+            background:
+                #f1f5f9;
+
+            color:
+                #334155;
+        }
+
+
+        .ai-ask-button {
+
+            background:
+                #15803d;
+
+            color:
+                white;
+        }
+
+
+        .ai-mic-button:hover,
+        .ai-ask-button:hover {
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .ai-status {
+
+            margin-top:
+                12px;
+
+            color:
+                #64748b;
+
+            font-size:
+                13px;
+
+            min-height:
+                20px;
+        }
+
+
+        .ai-answer-box {
+
+            margin-top:
+                18px;
+
+            padding:
+                20px;
+
+            background:
+                white;
+
+            border-radius:
+                17px;
+
+            border-left:
+                5px solid #16a34a;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0,0,0,0.04);
+        }
+
+
+        .answer-title {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                9px;
+
+            color:
+                #14532d;
+
+            margin-bottom:
+                12px;
+        }
+
+
+        #aiAnswer {
+
+            white-space:
+                pre-wrap;
+
+            line-height:
+                1.75;
+
+            color:
+                #334155;
+
+            font-size:
+                14px;
+        }
+
+
+        .listen-answer {
+
+            margin-top:
+                16px;
+
+            border:
+                none;
+
+            background:
+                #ecfdf5;
+
+            color:
+                #15803d;
+
+            padding:
+                10px 15px;
+
+            border-radius:
+                10px;
+
+            font-weight:
+                800;
+
+            font-size:
+                12px;
+        }
+
+
+        /* =====================================================
+           UPCOMING CROPS
+        ===================================================== */
+
+        .crops-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap:
+                14px;
+        }
+
+
+        .crop-card {
+
+            background:
+                white;
+
+            border:
+                1px solid #e2ece5;
+
+            border-radius:
+                18px;
+
+            padding:
+                20px 12px;
+
+            text-align:
+                center;
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+        }
+
+
+        .crop-emoji {
+
+            font-size:
+                35px;
+
+            margin-bottom:
+                10px;
+        }
+
+
+        .crop-card h3 {
+
+            font-size:
+                14px;
+
+            margin-bottom:
+                7px;
+        }
+
+
+        .coming {
+
+            display:
+                inline-block;
+
+            background:
+                #f0fdf4;
+
+            color:
+                #15803d;
+
+            padding:
+                5px 8px;
+
+            border-radius:
+                999px;
+
+            font-size:
+                9px;
+
+            font-weight:
+                800;
+        }
+
+
+        /* =====================================================
+           HOW IT WORKS
+        ===================================================== */
+
+        .steps {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap:
+                18px;
+        }
+
+
+        .step {
+
+            background:
+                white;
+
+            border:
+                1px solid #e2ece5;
+
+            border-radius:
+                20px;
+
+            padding:
+                25px;
+
+            position:
+                relative;
+        }
+
+
+        .step-number {
+
+            width:
+                40px;
+
+            height:
+                40px;
+
+            border-radius:
+                12px;
+
+            background:
+                #dcfce7;
+
+            color:
+                #166534;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            font-weight:
+                900;
+
+            margin-bottom:
+                15px;
+        }
+
+
+        .step h3 {
+
+            margin-bottom:
+                8px;
+        }
+
+
+        .step p {
+
+            color:
+                #718078;
+
+            font-size:
+                13px;
+
+            line-height:
+                1.6;
+        }
+
+
+        /* =====================================================
+           ABOUT
+        ===================================================== */
+
+        .about {
+
+            background:
+                #063b27;
+
+            color:
+                white;
+
+            border-radius:
+                25px;
+
+            padding:
+                35px;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap:
+                30px;
+        }
+
+
+        .about h2 {
+
+            font-size:
+                30px;
+
+            margin-bottom:
+                13px;
+        }
+
+
+        .about p {
+
+            color:
+                #c9e8d6;
+
+            line-height:
+                1.75;
+
+            font-size:
+                14px;
+        }
+
+
+        .about-points {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap:
+                12px;
+        }
+
+
+        .about-point {
+
+            padding:
+                15px;
+
+            background:
+                rgba(255,255,255,0.07);
+
+            border-radius:
+                13px;
+
+            font-size:
+                13px;
+
+            color:
+                #dcfce7;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+
+            margin-top:
+                55px;
+
+            padding:
+                25px 0;
+
+            text-align:
+                center;
+
+            color:
+                #718078;
+
+            font-size:
+                12px;
+
+            border-top:
+                1px solid #e2ece5;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media(max-width:1000px) {
+
+            .sidebar {
+
+                width:
+                    210px;
+            }
+
+
+            .main {
+
+                margin-left:
+                    210px;
+            }
+
 
             .hero {
-                grid-template-columns: 1fr;
+
+                grid-template-columns:
+                    1fr;
             }
 
-            .hero-img {
-                min-height: 240px;
+
+            .features {
+
+                grid-template-columns:
+                    1fr 1fr;
             }
 
-            .crops {
-                grid-template-columns: repeat(4, 1fr);
+
+            .crops-grid {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
             }
 
-            .upload-grid {
-                grid-template-columns: 1fr;
+
+            .upload-card {
+
+                grid-template-columns:
+                    1fr;
             }
+
+
+            .about {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+        }
+
+
+        @media(max-width:700px) {
+
+            .sidebar {
+
+                position:
+                    relative;
+
+                width:
+                    100%;
+
+                height:
+                    auto;
+
+                padding:
+                    15px;
+            }
+
+
+            .brand {
+
+                padding-bottom:
+                    15px;
+            }
+
+
+            .nav {
+
+                flex-direction:
+                    row;
+
+                flex-wrap:
+                    wrap;
+
+                margin-top:
+                    12px;
+            }
+
+
+            .nav a {
+
+                padding:
+                    8px 10px;
+
+                font-size:
+                    11px;
+            }
+
+
+            .sidebar-bottom {
+
+                display:
+                    none;
+            }
+
+
+            .main {
+
+                margin-left:
+                    0;
+            }
+
+
+            .topbar {
+
+                padding:
+                    0 15px;
+
+                height:
+                    60px;
+            }
+
+
+            .content {
+
+                padding:
+                    18px;
+            }
+
+
+            .hero {
+
+                padding:
+                    24px;
+
+                border-radius:
+                    22px;
+            }
+
+
+            .hero h1 {
+
+                font-size:
+                    40px;
+            }
+
+
+            .scanner-area {
+
+                min-height:
+                    280px;
+            }
+
+
+            .features {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .crops-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
 
             .steps {
-                grid-template-columns: 1fr;
+
+                grid-template-columns:
+                    1fr;
             }
+
+
+            .about-points {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .ai-actions {
+
+                flex-direction:
+                    column;
+            }
+
+
+            .ai-mic-button,
+            .ai-ask-button {
+
+                width:
+                    100%;
+            }
+
         }
+
 
     </style>
 
@@ -535,453 +2097,1050 @@
 <body>
 
 
-    <!-- ================= HEADER ================= -->
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
 
-    <header>
+<aside class="sidebar">
 
-        <div class="logo">
+    <div class="brand">
 
-            <span class="logo-icon">🌿</span>
+        <div class="brand-icon">
+            🌿
+        </div>
 
-            <div>
+        <div class="brand-text">
 
-                AI Multi-Crop Disease Detection
+            <h2>
+                AI Crop Doctor
+            </h2>
 
-                <small>
-                    & Smart Crop Health Assistant
-                </small>
+            <span>
+                SMART AGRICULTURE
+            </span>
 
-            </div>
+        </div>
+
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="#home">
+            🏠
+            <span
+                data-en="Dashboard"
+                data-te="డాష్‌బోర్డ్"
+            >
+                Dashboard
+            </span>
+        </a>
+
+
+        <a href="#scanner">
+            📷
+            <span
+                data-en="Disease Scanner"
+                data-te="వ్యాధి స్కానర్"
+            >
+                Disease Scanner
+            </span>
+        </a>
+
+
+        <a href="#aiAssistant">
+            🤖
+            <span
+                data-en="Ask AI"
+                data-te="AI ని అడగండి"
+            >
+                Ask AI
+            </span>
+        </a>
+
+
+        <a href="#howItWorks">
+            📖
+            <span
+                data-en="How It Works"
+                data-te="ఎలా పనిచేస్తుంది"
+            >
+                How It Works
+            </span>
+        </a>
+
+
+        <a href="#about">
+            ℹ️
+            <span
+                data-en="About"
+                data-te="మా గురించి"
+            >
+                About
+            </span>
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        🌱
+        <strong>
+            AI Crop Doctor
+        </strong>
+
+        <br>
+
+        <span
+            data-en="Helping farmers make smarter crop decisions."
+            data-te="రైతులు మంచి పంట నిర్ణయాలు తీసుకోవడానికి సహాయం."
+        >
+            Helping farmers make smarter crop decisions.
+        </span>
+
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+
+    <!-- =================================================
+         TOPBAR
+    ================================================== -->
+
+    <header class="topbar">
+
+        <div class="topbar-title">
+
+            🌿
+            <span
+                data-en="AI-Powered Crop Health"
+                data-te="AI ఆధారిత పంట ఆరోగ్యం"
+            >
+                AI-Powered Crop Health
+            </span>
 
         </div>
 
 
-        <nav>
+        <div class="language-switch">
 
-            <a href="#home">
-                Home
-            </a>
+            <button
+                id="englishBtn"
+                onclick="setLanguage('en')"
+            >
+                English
+            </button>
 
-            <a href="#history">
-                History
-            </a>
+            <button
+                id="teluguBtn"
+                onclick="setLanguage('te')"
+            >
+                తెలుగు
+            </button>
 
-            <a href="#about">
-                About
-            </a>
-
-            <span
-                class="lang"
-                onclick="toggleLanguage()"
-                id="langBtn">
-
-                🌐 EN
-
-            </span>
-
-        </nav>
+        </div>
 
     </header>
 
 
+    <!-- =================================================
+         CONTENT
+    ================================================== -->
 
-    <!-- ================= HOME ================= -->
-
-    <main id="home">
-
-
-        <!-- HERO -->
-
-        <section class="hero">
+    <div class="content">
 
 
-            <div class="hero-text">
+        <!-- =============================================
+             HERO
+        ============================================== -->
 
+        <section
+            class="hero"
+            id="home"
+        >
 
-                <h1 id="heroTitle">
+            <div class="hero-content">
 
-                    Healthy Crops 🌿
+                <div class="hero-tag">
 
-                    <br>
+                    🌱
 
-                    Better Tomorrow
-
-                </h1>
-
-
-                <p id="heroDesc">
-
-                    Upload a leaf image and get instant
-                    AI-powered disease detection,
-                    crop identification and expert advice
-                    for healthier plants and higher yield.
-
-                </p>
-
-
-                <div class="tags">
-
-                    <span class="tag">
-                        🍃 Multi-Crop Support
-                    </span>
-
-                    <span class="tag">
-                        🔎 Disease Detection
-                    </span>
-
-                    <span class="tag">
-                        💊 Treatment Suggestions
-                    </span>
-
-                    <span class="tag">
-                        📄 History & Reports
+                    <span
+                        data-en="AI CROP INTELLIGENCE"
+                        data-te="AI పంట మేధస్సు"
+                    >
+                        AI CROP INTELLIGENCE
                     </span>
 
                 </div>
 
 
-                <a
-                    href="#scanner"
-                    class="primary">
+                <h1>
 
-                    ⬆ Upload Leaf Image
+                    <span
+                        data-en="Healthy Crops"
+                        data-te="ఆరోగ్యకరమైన పంటలు"
+                    >
+                        Healthy Crops
+                    </span>
 
-                </a>
+                    🌿
 
+                    <br>
+
+                    <span
+                        data-en="Better Future"
+                        data-te="మంచి భవిష్యత్తు"
+                    >
+                        Better Future
+                    </span>
+
+                </h1>
+
+
+                <p
+                    data-en="Upload a tomato leaf image and let AI analyze it for possible diseases. You can also ask our AI Crop Doctor questions in English or Telugu."
+                    data-te="టమాటా ఆకు ఫోటోను upload చేసి AI ద్వారా వ్యాధులను గుర్తించండి. అలాగే English లేదా Telugu లో AI Crop Doctor ని ప్రశ్నలు అడగండి."
+                >
+                    Upload a tomato leaf image and let AI analyze it for possible diseases. You can also ask our AI Crop Doctor questions in English or Telugu.
+                </p>
+
+
+                <div class="hero-buttons">
+
+                    <button
+                        class="primary-btn"
+                        onclick="scrollToScanner()"
+                    >
+                        📷
+
+                        <span
+                            data-en="Scan Crop"
+                            data-te="పంటను స్కాన్ చేయండి"
+                        >
+                            Scan Crop
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="secondary-btn"
+                        onclick="scrollToAI()"
+                    >
+                        🤖
+
+                        <span
+                            data-en="Ask AI"
+                            data-te="AI ని అడగండి"
+                        >
+                            Ask AI
+                        </span>
+
+                    </button>
+
+                </div>
 
             </div>
 
 
-            <div class="hero-img"></div>
+            <!-- =========================================
+                 AI SCANNER VISUAL
+            ========================================== -->
 
+            <div class="scanner-area">
+
+                <div class="scanner">
+
+                    <div class="scanner-grid"></div>
+
+                    <div class="scanner-ring ring-one"></div>
+
+                    <div class="scanner-ring ring-two"></div>
+
+                    <div class="scanner-ring ring-three"></div>
+
+                    <div class="scan-line"></div>
+
+                    <div class="scanner-leaf">
+                        🌿
+                    </div>
+
+                    <div class="scanner-label">
+                        AI VISION SCANNER
+                    </div>
+
+                </div>
+
+            </div>
 
         </section>
 
 
+        <!-- =================================================
+             FEATURES
+        ================================================== -->
 
-        <!-- ================= CROP LIST ================= -->
+        <section class="section">
 
-        <div class="crops">
+            <div class="section-heading">
 
+                <span
+                    data-en="SMART FEATURES"
+                    data-te="స్మార్ట్ ఫీచర్లు"
+                >
+                    SMART FEATURES
+                </span>
 
-            <div class="crop">
+                <h2
+                    data-en="Everything You Need"
+                    data-te="మీకు అవసరమైన ప్రతిదీ"
+                >
+                    Everything You Need
+                </h2>
 
-                <b>🍅</b>
-
-                Tomato
-
-            </div>
-
-
-            <div class="crop">
-
-                <b>🥔</b>
-
-                Potato
-
-            </div>
-
-
-            <div class="crop">
-
-                <b>🌽</b>
-
-                Maize
-
-            </div>
-
-
-            <div class="crop">
-
-                <b>🌾</b>
-
-                Rice
+                <p
+                    data-en="Simple tools designed for smarter crop care."
+                    data-te="మంచి పంట సంరక్షణ కోసం సులభమైన స్మార్ట్ టూల్స్."
+                >
+                    Simple tools designed for smarter crop care.
+                </p>
 
             </div>
 
 
-            <div class="crop">
+            <div class="features">
 
-                <b>🍎</b>
 
-                Apple
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        🔬
+                    </div>
+
+                    <h3
+                        data-en="AI Disease Detection"
+                        data-te="AI వ్యాధి గుర్తింపు"
+                    >
+                        AI Disease Detection
+                    </h3>
+
+                    <p
+                        data-en="Upload a tomato leaf image and our trained AI model predicts the most likely disease."
+                        data-te="టమాటా ఆకు ఫోటోను upload చేస్తే trained AI model సాధ్యమైన వ్యాధిని గుర్తిస్తుంది."
+                    >
+                        Upload a tomato leaf image and our trained AI model predicts the most likely disease.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        🤖
+                    </div>
+
+                    <h3
+                        data-en="Ask AI Questions"
+                        data-te="AI ని ప్రశ్నించండి"
+                    >
+                        Ask AI Questions
+                    </h3>
+
+                    <p
+                        data-en="Ask questions about diseases, symptoms, treatment, pests, watering and crop care in English or Telugu."
+                        data-te="వ్యాధులు, లక్షణాలు, చికిత్స, పురుగులు, నీరు మరియు పంట సంరక్షణ గురించి English లేదా Telugu లో అడగండి."
+                    >
+                        Ask questions about diseases, symptoms, treatment, pests, watering and crop care in English or Telugu.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        🌐
+                    </div>
+
+                    <h3
+                        data-en="English + Telugu"
+                        data-te="English + తెలుగు"
+                    >
+                        English + Telugu
+                    </h3>
+
+                    <p
+                        data-en="Switch the complete interface between English and Telugu."
+                        data-te="మొత్తం interface ను English మరియు Telugu మధ్య మార్చుకోవచ్చు."
+                    >
+                        Switch the complete interface between English and Telugu.
+                    </p>
+
+                </div>
 
             </div>
 
-
-            <div class="crop">
-
-                <b>🍇</b>
-
-                Grape
-
-            </div>
+        </section>
 
 
-            <div class="crop">
-
-                <b>🌶️</b>
-
-                Pepper
-
-            </div>
-
-
-            <div class="crop">
-
-                <b>🥒</b>
-
-                Cucumber
-
-            </div>
-
-
-        </div>
-
-
-
-        <!-- ================= SCANNER ================= -->
+        <!-- =================================================
+             DISEASE SCANNER
+        ================================================== -->
 
         <section
             class="section"
-            id="scanner">
+            id="scanner"
+        >
+
+            <div class="section-heading">
+
+                <span
+                    data-en="AI VISION"
+                    data-te="AI విజన్"
+                >
+                    AI VISION
+                </span>
+
+                <h2
+                    data-en="Tomato Disease Scanner"
+                    data-te="టమాటా వ్యాధి స్కానర్"
+                >
+                    Tomato Disease Scanner
+                </h2>
+
+                <p
+                    data-en="Upload a clear image of a tomato leaf for AI analysis."
+                    data-te="AI విశ్లేషణ కోసం టమాటా ఆకు యొక్క స్పష్టమైన ఫోటోను upload చేయండి."
+                >
+                    Upload a clear image of a tomato leaf for AI analysis.
+                </p>
+
+            </div>
 
 
-            <h2>
-
-                Upload Leaf Image
-
-            </h2>
+            <div class="upload-card">
 
 
-            <p>
+                <!-- UPLOAD -->
 
-                Choose a clear image of a crop leaf
-                for AI-assisted analysis.
+                <div>
 
-            </p>
+                    <div
+                        class="upload-box"
+                        id="uploadBox"
+                    >
 
+                        <div>
 
-            <div class="scanner">
-
-
-                <form
-                    action="/predict"
-                    method="POST"
-                    enctype="multipart/form-data">
-
-
-                    <div class="upload-grid">
-
-
-                        <!-- UPLOAD -->
-
-                        <div class="upload-box">
-
-
-                            <div class="cloud">
-
-                                ☁️
-
+                            <div class="upload-icon">
+                                📷
                             </div>
 
-
-                            <h3>
-
-                                Drag & drop an image here
-
+                            <h3
+                                data-en="Upload Leaf Image"
+                                data-te="ఆకు ఫోటో Upload చేయండి"
+                            >
+                                Upload Leaf Image
                             </h3>
-
-
-                            <p>
-
-                                or
-
-                            </p>
-
-
-                            <label
-                                class="choose"
-                                for="image">
-
-                                🖼 Choose Image
-
-                            </label>
-
-
-                            <input
-                                id="image"
-                                name="image"
-                                type="file"
-                                accept="image/*"
-                                onchange="previewImage(event)"
-                                required>
-
-
-                            <img
-                                id="preview"
-                                class="preview"
-                                alt="Selected leaf preview">
-
-
-                            <br>
-
-
-                            <button
-                                class="analyze"
-                                type="submit">
-
-                                🔍 Analyze Leaf
-
-                            </button>
-
 
                             <p
-                                style="margin-top:12px;font-size:11px">
-
-                                Supported:
-                                JPG, JPEG, PNG
-
+                                data-en="JPG, JPEG or PNG • Maximum 10 MB"
+                                data-te="JPG, JPEG లేదా PNG • గరిష్టంగా 10 MB"
+                            >
+                                JPG, JPEG or PNG • Maximum 10 MB
                             </p>
 
 
-                        </div>
+                            <form
+                                id="uploadForm"
+                                action="/predict"
+                                method="POST"
+                                enctype="multipart/form-data"
+                            >
+
+                                <input
+                                    type="file"
+                                    id="fileInput"
+                                    name="file"
+                                    class="file-input"
+                                    accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                                    onchange="previewImage(event)"
+                                >
 
 
+                                <label
+                                    for="fileInput"
+                                    class="upload-label"
+                                >
+                                    📁
 
-                        <!-- AVAILABLE CROPS -->
+                                    <span
+                                        data-en="Choose Image"
+                                        data-te="ఫోటో ఎంచుకోండి"
+                                    >
+                                        Choose Image
+                                    </span>
 
-                        <div class="available">
+                                </label>
 
-
-                            <h3>
-
-                                Available Crops
-
-                            </h3>
-
-
-                            <div class="mini-crops">
-
-
-                                <div class="mini">
-
-                                    <b>🍅</b>
-
-                                    Tomato
-
-                                </div>
-
-
-                                <div class="mini">
-
-                                    <b>🥔</b>
-
-                                    Potato
-
-                                </div>
-
-
-                                <div class="mini">
-
-                                    <b>🌽</b>
-
-                                    Maize
-
-                                </div>
-
-
-                                <div class="mini">
-
-                                    <b>🌾</b>
-
-                                    Rice
-
-                                </div>
-
-
-                                <div class="mini">
-
-                                    <b>🍎</b>
-
-                                    Apple
-
-                                </div>
-
-
-                                <div class="mini">
-
-                                    <b>🍇</b>
-
-                                    Grape
-
-                                </div>
-
-
-                                <div class="mini">
-
-                                    <b>🌶️</b>
-
-                                    Pepper
-
-                                </div>
-
-
-                                <div class="mini">
-
-                                    <b>🥒</b>
-
-                                    Cucumber
-
-                                </div>
-
-
-                            </div>
-
-
-                            <div class="note">
-
-                                💡 You can upload any crop
-                                leaf image. The current trained
-                                AI model is optimized for the
-                                classes available in your project.
-
-                            </div>
-
+                            </form>
 
                         </div>
-
 
                     </div>
 
 
-                </form>
+                    <button
+                        type="button"
+                        class="analyze-button"
+                        id="analyzeButton"
+                        onclick="submitPrediction()"
+                        disabled
+                    >
+                        🔍
 
+                        <span
+                            data-en="Analyze Image"
+                            data-te="ఫోటోను విశ్లేషించండి"
+                        >
+                            Analyze Image
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <!-- PREVIEW -->
+
+                <div class="preview-area">
+
+                    <div
+                        class="preview-placeholder"
+                        id="previewPlaceholder"
+                    >
+
+                        <div
+                            style="
+                                font-size:45px;
+                                margin-bottom:10px;
+                            "
+                        >
+                            🌿
+                        </div>
+
+                        <span
+                            data-en="Your selected image will appear here"
+                            data-te="మీరు ఎంచుకున్న ఫోటో ఇక్కడ కనిపిస్తుంది"
+                        >
+                            Your selected image will appear here
+                        </span>
+
+                    </div>
+
+
+                    <img
+                        id="imagePreview"
+                        alt="Selected tomato leaf"
+                    >
+
+                </div>
 
             </div>
-
 
         </section>
 
 
+        <!-- =================================================
+             AI ASSISTANT
+        ================================================== -->
 
-        <!-- ================= HOW IT WORKS ================= -->
+        <section
+            class="section"
+            id="aiAssistant"
+        >
+
+            <div class="section-heading">
+
+                <span
+                    data-en="AI CROP DOCTOR"
+                    data-te="AI CROP DOCTOR"
+                >
+                    AI CROP DOCTOR
+                </span>
+
+                <h2
+                    data-en="Ask AI About Your Crop"
+                    data-te="మీ పంట గురించి AI ని అడగండి"
+                >
+                    Ask AI About Your Crop
+                </h2>
+
+                <p
+                    data-en="Ask questions in English or Telugu using text or voice."
+                    data-te="Text లేదా voice ద్వారా English లేదా Telugu లో ప్రశ్నలు అడగండి."
+                >
+                    Ask questions in English or Telugu using text or voice.
+                </p>
+
+            </div>
+
+
+            <div class="ai-assistant-card">
+
+
+                <div class="ai-header">
+
+                    <div class="ai-avatar">
+                        🤖
+                    </div>
+
+
+                    <div>
+
+                        <div class="ai-label">
+                            AI CROP DOCTOR
+                        </div>
+
+                        <h2
+                            data-en="How can I help you?"
+                            data-te="నేను మీకు ఎలా సహాయం చేయగలను?"
+                        >
+                            How can I help you?
+                        </h2>
+
+                        <p
+                            data-en="Ask about diseases, pests, treatment, watering, fertilizers and crop care."
+                            data-te="వ్యాధులు, పురుగులు, చికిత్స, నీరు, ఎరువులు మరియు పంట సంరక్షణ గురించి అడగండి."
+                        >
+                            Ask about diseases, pests, treatment, watering, fertilizers and crop care.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ai-question-box">
+
+                    <textarea
+                        id="aiQuestion"
+                        placeholder="Example: Why are my tomato leaves turning yellow?"
+                        data-placeholder-en="Example: Why are my tomato leaves turning yellow?"
+                        data-placeholder-te="ఉదాహరణ: నా టమాటా ఆకులు పసుపు రంగులోకి ఎందుకు మారుతున్నాయి?"
+                    ></textarea>
+
+
+                    <div class="ai-actions">
+
+                        <button
+                            type="button"
+                            class="ai-mic-button"
+                            onclick="startAIListening()"
+                        >
+                            🎙️
+
+                            <span
+                                data-en="Speak Question"
+                                data-te="ప్రశ్న మాట్లాడండి"
+                            >
+                                Speak Question
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="ai-ask-button"
+                            onclick="askCropAI()"
+                        >
+                            🤖
+
+                            <span
+                                data-en="Ask AI"
+                                data-te="AI ని అడగండి"
+                            >
+                                Ask AI
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="aiStatus"
+                    class="ai-status"
+                ></div>
+
+
+                <div
+                    id="aiAnswerBox"
+                    class="ai-answer-box"
+                    style="display:none;"
+                >
+
+                    <div class="answer-title">
+
+                        <span>
+                            🤖
+                        </span>
+
+                        <strong
+                            data-en="AI Answer"
+                            data-te="AI సమాధానం"
+                        >
+                            AI Answer
+                        </strong>
+
+                    </div>
+
+
+                    <div id="aiAnswer">
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="listen-answer"
+                        onclick="speakAIAnswer()"
+                    >
+                        🔊
+
+                        <span
+                            data-en="Listen to Answer"
+                            data-te="సమాధానం వినండి"
+                        >
+                            Listen to Answer
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             UPCOMING CROPS
+        ================================================== -->
 
         <section class="section">
 
+            <div class="section-heading">
 
-            <h2>
+                <span
+                    data-en="COMING SOON"
+                    data-te="త్వరలో"
+                >
+                    COMING SOON
+                </span>
 
-                How It Works
+                <h2
+                    data-en="More Crops"
+                    data-te="మరిన్ని పంటలు"
+                >
+                    More Crops
+                </h2>
 
-            </h2>
+                <p
+                    data-en="More crop disease models can be added in future."
+                    data-te="భవిష్యత్తులో మరిన్ని పంటల disease models add చేయవచ్చు."
+                >
+                    More crop disease models can be added in future.
+                </p>
+
+            </div>
 
 
-            <p>
+            <div class="crops-grid">
 
-                Three simple steps to check your crop health.
 
-            </p>
+                <div class="crop-card">
+
+                    <div class="crop-emoji">
+                        🥔
+                    </div>
+
+                    <h3
+                        data-en="Potato"
+                        data-te="బంగాళాదుంప"
+                    >
+                        Potato
+                    </h3>
+
+                    <span
+                        class="coming"
+                        data-en="Coming Soon"
+                        data-te="త్వరలో"
+                    >
+                        Coming Soon
+                    </span>
+
+                </div>
+
+
+                <div class="crop-card">
+
+                    <div class="crop-emoji">
+                        🌾
+                    </div>
+
+                    <h3
+                        data-en="Rice"
+                        data-te="వరి"
+                    >
+                        Rice
+                    </h3>
+
+                    <span
+                        class="coming"
+                        data-en="Coming Soon"
+                        data-te="త్వరలో"
+                    >
+                        Coming Soon
+                    </span>
+
+                </div>
+
+
+                <div class="crop-card">
+
+                    <div class="crop-emoji">
+                        🌽
+                    </div>
+
+                    <h3
+                        data-en="Maize"
+                        data-te="మొక్కజొన్న"
+                    >
+                        Maize
+                    </h3>
+
+                    <span
+                        class="coming"
+                        data-en="Coming Soon"
+                        data-te="త్వరలో"
+                    >
+                        Coming Soon
+                    </span>
+
+                </div>
+
+
+                <div class="crop-card">
+
+                    <div class="crop-emoji">
+                        🍎
+                    </div>
+
+                    <h3
+                        data-en="Apple"
+                        data-te="ఆపిల్"
+                    >
+                        Apple
+                    </h3>
+
+                    <span
+                        class="coming"
+                        data-en="Coming Soon"
+                        data-te="త్వరలో"
+                    >
+                        Coming Soon
+                    </span>
+
+                </div>
+
+
+                <div class="crop-card">
+
+                    <div class="crop-emoji">
+                        🍇
+                    </div>
+
+                    <h3
+                        data-en="Grape"
+                        data-te="ద్రాక్ష"
+                    >
+                        Grape
+                    </h3>
+
+                    <span
+                        class="coming"
+                        data-en="Coming Soon"
+                        data-te="త్వరలో"
+                    >
+                        Coming Soon
+                    </span>
+
+                </div>
+
+
+                <div class="crop-card">
+
+                    <div class="crop-emoji">
+                        🫑
+                    </div>
+
+                    <h3
+                        data-en="Bell Pepper"
+                        data-te="క్యాప్సికమ్"
+                    >
+                        Bell Pepper
+                    </h3>
+
+                    <span
+                        class="coming"
+                        data-en="Coming Soon"
+                        data-te="త్వరలో"
+                    >
+                        Coming Soon
+                    </span>
+
+                </div>
+
+
+                <div class="crop-card">
+
+                    <div class="crop-emoji">
+                        🥒
+                    </div>
+
+                    <h3
+                        data-en="Cucumber"
+                        data-te="దోసకాయ"
+                    >
+                        Cucumber
+                    </h3>
+
+                    <span
+                        class="coming"
+                        data-en="Coming Soon"
+                        data-te="త్వరలో"
+                    >
+                        Coming Soon
+                    </span>
+
+                </div>
+
+
+                <div class="crop-card">
+
+                    <div class="crop-emoji">
+                        🌿
+                    </div>
+
+                    <h3
+                        data-en="Cotton"
+                        data-te="పత్తి"
+                    >
+                        Cotton
+                    </h3>
+
+                    <span
+                        class="coming"
+                        data-en="Coming Soon"
+                        data-te="త్వరలో"
+                    >
+                        Coming Soon
+                    </span>
+
+                </div>
+
+
+                <div class="crop-card">
+
+                    <div class="crop-emoji">
+                        🌶️
+                    </div>
+
+                    <h3
+                        data-en="Chili"
+                        data-te="మిరప"
+                    >
+                        Chili
+                    </h3>
+
+                    <span
+                        class="coming"
+                        data-en="Coming Soon"
+                        data-te="త్వరలో"
+                    >
+                        Coming Soon
+                    </span>
+
+                </div>
+
+
+                <div class="crop-card">
+
+                    <div class="crop-emoji">
+                        🥭
+                    </div>
+
+                    <h3
+                        data-en="Mango"
+                        data-te="మామిడి"
+                    >
+                        Mango
+                    </h3>
+
+                    <span
+                        class="coming"
+                        data-en="Coming Soon"
+                        data-te="త్వరలో"
+                    >
+                        Coming Soon
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             HOW IT WORKS
+        ================================================== -->
+
+        <section
+            class="section"
+            id="howItWorks"
+        >
+
+            <div class="section-heading">
+
+                <span
+                    data-en="SIMPLE PROCESS"
+                    data-te="సులభమైన ప్రక్రియ"
+                >
+                    SIMPLE PROCESS
+                </span>
+
+                <h2
+                    data-en="How It Works"
+                    data-te="ఎలా పనిచేస్తుంది"
+                >
+                    How It Works
+                </h2>
+
+            </div>
 
 
             <div class="steps">
@@ -989,193 +3148,973 @@
 
                 <div class="step">
 
-                    <div class="step-icon">
-                        📤
+                    <div class="step-number">
+                        01
                     </div>
 
-                    <h3>
-                        1. Upload
+                    <h3
+                        data-en="Upload"
+                        data-te="Upload చేయండి"
+                    >
+                        Upload
                     </h3>
 
-                    <p>
-
-                        Choose a clear crop leaf
-                        image from your device.
-
+                    <p
+                        data-en="Choose a clear tomato leaf image from your device."
+                        data-te="మీ device నుంచి టమాటా ఆకు యొక్క స్పష్టమైన ఫోటోను ఎంచుకోండి."
+                    >
+                        Choose a clear tomato leaf image from your device.
                     </p>
 
                 </div>
-
 
 
                 <div class="step">
 
-                    <div class="step-icon">
-                        🤖
+                    <div class="step-number">
+                        02
                     </div>
 
-                    <h3>
-                        2. Analyze
+                    <h3
+                        data-en="AI Analysis"
+                        data-te="AI విశ్లేషణ"
+                    >
+                        AI Analysis
                     </h3>
 
-                    <p>
-
-                        Our trained AI model
-                        analyzes the leaf image.
-
+                    <p
+                        data-en="The trained AI vision model analyzes the uploaded image."
+                        data-te="Trained AI vision model upload చేసిన ఫోటోను విశ్లేషిస్తుంది."
+                    >
+                        The trained AI vision model analyzes the uploaded image.
                     </p>
 
                 </div>
-
 
 
                 <div class="step">
 
-                    <div class="step-icon">
-                        📊
+                    <div class="step-number">
+                        03
                     </div>
 
-                    <h3>
-                        3. Get Result
+                    <h3
+                        data-en="Get Result + Ask AI"
+                        data-te="Result + AI ప్రశ్నలు"
+                    >
+                        Get Result + Ask AI
                     </h3>
 
-                    <p>
-
-                        See the predicted disease,
-                        confidence and guidance.
-
+                    <p
+                        data-en="View the disease result and ask AI follow-up questions about your crop."
+                        data-te="వ్యాధి result చూసి, మీ పంట గురించి AI ని follow-up questions అడగండి."
+                    >
+                        View the disease result and ask AI follow-up questions about your crop.
                     </p>
 
                 </div>
-
 
             </div>
 
-
         </section>
 
 
-
-        <!-- ================= ABOUT ================= -->
+        <!-- =================================================
+             ABOUT
+        ================================================== -->
 
         <section
             class="section"
-            id="about">
+            id="about"
+        >
+
+            <div class="about">
+
+                <div>
+
+                    <h2
+                        data-en="About AI Crop Doctor"
+                        data-te="AI Crop Doctor గురించి"
+                    >
+                        About AI Crop Doctor
+                    </h2>
+
+                    <p
+                        data-en="AI Crop Doctor is an AI-powered crop health assistant designed to help farmers identify possible tomato leaf diseases and understand practical crop-care steps. The system combines computer vision with an AI question-answer assistant."
+                        data-te="AI Crop Doctor అనేది టమాటా ఆకులలో కనిపించే సాధ్యమైన వ్యాధులను గుర్తించడంలో మరియు పంట సంరక్షణ గురించి ఉపయోగకరమైన సూచనలు పొందడంలో రైతులకు సహాయం చేసే AI వ్యవస్థ. ఇందులో computer vision మరియు AI question-answer assistant కలిసి పనిచేస్తాయి."
+                    >
+                        AI Crop Doctor is an AI-powered crop health assistant designed to help farmers identify possible tomato leaf diseases and understand practical crop-care steps. The system combines computer vision with an AI question-answer assistant.
+                    </p>
+
+                </div>
 
 
-            <h2>
+                <div class="about-points">
 
-                About AI Crop Doctor
+                    <div class="about-point">
+                        🔬
+                        <span
+                            data-en="AI Vision"
+                            data-te="AI విజన్"
+                        >
+                            AI Vision
+                        </span>
+                    </div>
 
-            </h2>
+                    <div class="about-point">
+                        🤖
+                        <span
+                            data-en="AI Questions"
+                            data-te="AI ప్రశ్నలు"
+                        >
+                            AI Questions
+                        </span>
+                    </div>
 
+                    <div class="about-point">
+                        🇮🇳
+                        <span
+                            data-en="Telugu Support"
+                            data-te="తెలుగు Support"
+                        >
+                            Telugu Support
+                        </span>
+                    </div>
 
-            <p>
+                    <div class="about-point">
+                        🎙️
+                        <span
+                            data-en="Voice Input"
+                            data-te="Voice Input"
+                        >
+                            Voice Input
+                        </span>
+                    </div>
 
-                AI-assisted crop health information
-                designed to make disease checking
-                easier for farmers.
+                </div>
 
-            </p>
-
+            </div>
 
         </section>
 
 
-    </main>
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer>
+
+            🌿 AI Crop Doctor
+
+            <br>
+
+            <span
+                data-en="AI-assisted crop health information. Always follow local agricultural guidance and product labels."
+                data-te="AI ఆధారిత పంట ఆరోగ్య సమాచారం. ఎల్లప్పుడూ స్థానిక వ్యవసాయ సూచనలు మరియు ఉత్పత్తి లేబుల్ సూచనలను పాటించండి."
+            >
+                AI-assisted crop health information. Always follow local agricultural guidance and product labels.
+            </span>
+
+        </footer>
 
 
+    </div>
 
-    <!-- ================= FOOTER ================= -->
-
-    <footer>
-
-        🌱
-
-        <strong>
-            AI Multi-Crop Disease Detection
-        </strong>
-
-        <br>
-
-        <small>
-            Smart tools for smarter agriculture
-        </small>
-
-    </footer>
+</main>
 
 
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
 
-    <!-- ================= JAVASCRIPT ================= -->
-
-    <script>
-
-
-        /* IMAGE PREVIEW */
-
-        function previewImage(event) {
-
-            const file =
-                event.target.files[0];
-
-            const preview =
-                document.getElementById("preview");
+<script>
 
 
-            if (file) {
+/* =====================================================
+   LANGUAGE
+===================================================== */
 
-                preview.src =
-                    URL.createObjectURL(file);
+let currentLanguage =
+    localStorage.getItem("language") || "en";
 
-                preview.style.display =
-                    "block";
+
+function setLanguage(language) {
+
+    currentLanguage =
+        language;
+
+    localStorage.setItem(
+        "language",
+        language
+    );
+
+
+    document.documentElement.lang =
+        language === "te"
+            ? "te"
+            : "en";
+
+
+    const elements =
+        document.querySelectorAll(
+            "[data-en][data-te]"
+        );
+
+
+    elements.forEach(
+        function(element) {
+
+            element.textContent =
+                language === "te"
+                    ? element.getAttribute("data-te")
+                    : element.getAttribute("data-en");
+
+        }
+    );
+
+
+    const placeholders =
+        document.querySelectorAll(
+            "[data-placeholder-en][data-placeholder-te]"
+        );
+
+
+    placeholders.forEach(
+        function(element) {
+
+            element.placeholder =
+                language === "te"
+                    ? element.getAttribute(
+                        "data-placeholder-te"
+                    )
+                    : element.getAttribute(
+                        "data-placeholder-en"
+                    );
+
+        }
+    );
+
+
+    document
+        .getElementById("englishBtn")
+        .classList.toggle(
+            "active",
+            language === "en"
+        );
+
+
+    document
+        .getElementById("teluguBtn")
+        .classList.toggle(
+            "active",
+            language === "te"
+        );
+
+}
+
+
+/* =====================================================
+   INITIAL LANGUAGE
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        setLanguage(
+            currentLanguage
+        );
+
+    }
+);
+
+
+/* =====================================================
+   SCROLL
+===================================================== */
+
+function scrollToScanner() {
+
+    document
+        .getElementById("scanner")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
+}
+
+
+function scrollToAI() {
+
+    document
+        .getElementById("aiAssistant")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
+}
+
+
+/* =====================================================
+   IMAGE PREVIEW
+===================================================== */
+
+function previewImage(event) {
+
+    const file =
+        event.target.files[0];
+
+
+    const preview =
+        document.getElementById(
+            "imagePreview"
+        );
+
+
+    const placeholder =
+        document.getElementById(
+            "previewPlaceholder"
+        );
+
+
+    const analyzeButton =
+        document.getElementById(
+            "analyzeButton"
+        );
+
+
+    if (!file) {
+
+        preview.style.display =
+            "none";
+
+        placeholder.style.display =
+            "block";
+
+        analyzeButton.disabled =
+            true;
+
+        return;
+
+    }
+
+
+    const allowedTypes = [
+        "image/jpeg",
+        "image/png"
+    ];
+
+
+    if (
+        !allowedTypes.includes(
+            file.type
+        )
+    ) {
+
+        alert(
+            currentLanguage === "te"
+                ? "JPG, JPEG లేదా PNG image మాత్రమే upload చేయండి."
+                : "Please upload a JPG, JPEG or PNG image."
+        );
+
+        event.target.value = "";
+
+        analyzeButton.disabled =
+            true;
+
+        return;
+
+    }
+
+
+    if (
+        file.size >
+        10 * 1024 * 1024
+    ) {
+
+        alert(
+            currentLanguage === "te"
+                ? "Image size 10 MB కంటే తక్కువగా ఉండాలి."
+                : "Image size must be less than 10 MB."
+        );
+
+        event.target.value = "";
+
+        analyzeButton.disabled =
+            true;
+
+        return;
+
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(e) {
+
+            preview.src =
+                e.target.result;
+
+            preview.style.display =
+                "block";
+
+            placeholder.style.display =
+                "none";
+
+            analyzeButton.disabled =
+                false;
+
+        };
+
+
+    reader.readAsDataURL(file);
+
+}
+
+
+/* =====================================================
+   SUBMIT PREDICTION
+===================================================== */
+
+function submitPrediction() {
+
+    const fileInput =
+        document.getElementById(
+            "fileInput"
+        );
+
+
+    if (
+        !fileInput.files ||
+        !fileInput.files[0]
+    ) {
+
+        alert(
+            currentLanguage === "te"
+                ? "ముందుగా ఒక image select చేయండి."
+                : "Please select an image first."
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "analyzeButton"
+        );
+
+
+    button.disabled =
+        true;
+
+
+    button.innerHTML =
+        currentLanguage === "te"
+            ? "⏳ AI విశ్లేషిస్తోంది..."
+            : "⏳ AI is analyzing...";
+
+
+    document
+        .getElementById("uploadForm")
+        .submit();
+
+}
+
+
+/* =====================================================
+   AI QUESTION
+===================================================== */
+
+let currentAIAnswer = "";
+
+
+async function askCropAI() {
+
+    const questionInput =
+        document.getElementById(
+            "aiQuestion"
+        );
+
+
+    const answerBox =
+        document.getElementById(
+            "aiAnswerBox"
+        );
+
+
+    const answer =
+        document.getElementById(
+            "aiAnswer"
+        );
+
+
+    const status =
+        document.getElementById(
+            "aiStatus"
+        );
+
+
+    const question =
+        questionInput.value.trim();
+
+
+    if (!question) {
+
+        answerBox.style.display =
+            "block";
+
+        answer.textContent =
+            currentLanguage === "te"
+                ? "దయచేసి ముందుగా ఒక ప్రశ్న అడగండి."
+                : "Please enter a question.";
+
+        return;
+
+    }
+
+
+    answerBox.style.display =
+        "block";
+
+
+    answer.textContent =
+        currentLanguage === "te"
+            ? "AI సమాధానం తయారు చేస్తోంది..."
+            : "AI is thinking...";
+
+
+    status.textContent =
+        currentLanguage === "te"
+            ? "🤖 AI Crop Doctor ని సంప్రదిస్తున్నాం..."
+            : "🤖 Connecting to AI Crop Doctor...";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/ask-ai",
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            question:
+                                question,
+
+                            language:
+                                currentLanguage
+
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        currentAIAnswer =
+            data.answer || "";
+
+
+        answer.textContent =
+            currentAIAnswer;
+
+
+        status.textContent =
+            data.success
+                ? (
+                    currentLanguage === "te"
+                        ? "✅ సమాధానం సిద్ధంగా ఉంది."
+                        : "✅ Answer ready."
+                )
+                : (
+                    currentLanguage === "te"
+                        ? "⚠️ AI response issue."
+                        : "⚠️ AI response issue."
+                );
+
+
+    } catch (error) {
+
+        console.error(
+            "AI error:",
+            error
+        );
+
+
+        answer.textContent =
+            currentLanguage === "te"
+                ? "AI సేవతో కనెక్ట్ కాలేకపోయాము. మళ్లీ ప్రయత్నించండి."
+                : "Unable to connect to AI. Please try again.";
+
+
+        status.textContent =
+            "";
+
+    }
+
+}
+
+
+/* =====================================================
+   ENTER TO ASK
+===================================================== */
+
+document
+    .getElementById(
+        "aiQuestion"
+    )
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+                askCropAI();
 
             }
 
         }
+    );
 
 
+/* =====================================================
+   VOICE INPUT
+===================================================== */
 
-        /* LANGUAGE */
-
-        let telugu = false;
-
-
-        function toggleLanguage() {
-
-            telugu = !telugu;
+let aiRecognition =
+    null;
 
 
-            document.getElementById("langBtn")
-                .textContent =
-                telugu
-                    ? "🌐 తెలుగు"
-                    : "🌐 EN";
+function startAIListening() {
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
 
 
-            document.getElementById("heroTitle")
-                .innerHTML =
-                telugu
+    if (!SpeechRecognition) {
 
-                    ? "ఆరోగ్యకరమైన పంటలు 🌿<br>మంచి భవిష్యత్తు"
+        alert(
+            currentLanguage === "te"
+                ? "మీ browser voice recognition ను support చేయడం లేదు. Chrome browser ఉపయోగించండి."
+                : "Your browser does not support voice recognition. Please use Chrome."
+        );
 
-                    : "Healthy Crops 🌿<br>Better Tomorrow";
+        return;
+
+    }
 
 
-            document.getElementById("heroDesc")
-                .textContent =
+    if (aiRecognition) {
 
-                telugu
+        try {
+            aiRecognition.stop();
+        } catch(e) {}
 
-                    ? "ఆకు చిత్రాన్ని అప్‌లోడ్ చేసి AI ద్వారా పంట వ్యాధిని గుర్తించండి."
+    }
 
-                    : "Upload a leaf image and get instant AI-powered disease detection, crop identification and expert advice for healthier plants and higher yield.";
+
+    aiRecognition =
+        new SpeechRecognition();
+
+
+    aiRecognition.lang =
+        currentLanguage === "te"
+            ? "te-IN"
+            : "en-IN";
+
+
+    aiRecognition.continuous =
+        false;
+
+
+    aiRecognition.interimResults =
+        true;
+
+
+    aiRecognition.maxAlternatives =
+        1;
+
+
+    const questionInput =
+        document.getElementById(
+            "aiQuestion"
+        );
+
+
+    const status =
+        document.getElementById(
+            "aiStatus"
+        );
+
+
+    status.textContent =
+        currentLanguage === "te"
+            ? "🎙️ వింటున్నాను... ఇప్పుడు మాట్లాడండి."
+            : "🎙️ Listening... please speak now.";
+
+
+    aiRecognition.onstart =
+        function() {
+
+            status.textContent =
+                currentLanguage === "te"
+                    ? "🎙️ వింటున్నాను..."
+                    : "🎙️ Listening...";
+
+        };
+
+
+    aiRecognition.onresult =
+        function(event) {
+
+            let transcript =
+                "";
+
+
+            for (
+                let i =
+                    event.resultIndex;
+
+                i <
+                    event.results.length;
+
+                i++
+            ) {
+
+                transcript +=
+                    event.results[i][0]
+                        .transcript;
+
+            }
+
+
+            questionInput.value =
+                transcript;
+
+        };
+
+
+    aiRecognition.onerror =
+        function(event) {
+
+            console.error(
+                "Speech error:",
+                event
+            );
+
+
+            if (
+                event.error ===
+                "not-allowed"
+            ) {
+
+                status.textContent =
+                    currentLanguage === "te"
+                        ? "🎙️ Microphone permission ఇవ్వండి."
+                        : "🎙️ Please allow microphone permission.";
+
+            } else {
+
+                status.textContent =
+                    currentLanguage === "te"
+                        ? "🎙️ Voice input లో సమస్య వచ్చింది."
+                        : "🎙️ Voice input error occurred.";
+
+            }
+
+        };
+
+
+    aiRecognition.onend =
+        function() {
+
+            if (
+                questionInput.value.trim()
+            ) {
+
+                status.textContent =
+                    currentLanguage === "te"
+                        ? "✅ ప్రశ్న సిద్ధంగా ఉంది. Ask AI నొక్కండి."
+                        : "✅ Question ready. Click Ask AI.";
+
+            } else {
+
+                status.textContent =
+                    "";
+
+            }
+
+        };
+
+
+    try {
+
+        aiRecognition.start();
+
+    } catch(error) {
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =====================================================
+   SPEAK AI ANSWER
+===================================================== */
+
+function speakAIAnswer() {
+
+    if (!currentAIAnswer) {
+
+        return;
+
+    }
+
+
+    if (
+        !("speechSynthesis" in window)
+    ) {
+
+        alert(
+            currentLanguage === "te"
+                ? "మీ browser speech synthesis ను support చేయడం లేదు."
+                : "Your browser does not support speech synthesis."
+        );
+
+        return;
+
+    }
+
+
+    window.speechSynthesis.cancel();
+
+
+    const utterance =
+        new SpeechSynthesisUtterance(
+            currentAIAnswer
+        );
+
+
+    utterance.lang =
+        currentLanguage === "te"
+            ? "te-IN"
+            : "en-IN";
+
+
+    utterance.rate =
+        0.9;
+
+
+    utterance.pitch =
+        1;
+
+
+    const voices =
+        window.speechSynthesis
+            .getVoices();
+
+
+    let selectedVoice =
+        null;
+
+
+    if (
+        currentLanguage === "te"
+    ) {
+
+        selectedVoice =
+            voices.find(
+                voice =>
+                    voice.lang
+                        .toLowerCase()
+                        .startsWith("te")
+            );
+
+    } else {
+
+        selectedVoice =
+            voices.find(
+                voice =>
+                    voice.lang
+                        .toLowerCase()
+                        .startsWith("en-in")
+            );
+
+
+        if (!selectedVoice) {
+
+            selectedVoice =
+                voices.find(
+                    voice =>
+                        voice.lang
+                            .toLowerCase()
+                            .startsWith("en")
+                );
 
         }
 
+    }
 
-    </script>
 
+    if (selectedVoice) {
+
+        utterance.voice =
+            selectedVoice;
+
+    }
+
+
+    window.speechSynthesis.speak(
+        utterance
+    );
+
+}
+
+
+/* =====================================================
+   LOAD VOICES
+===================================================== */
+
+if (
+    "speechSynthesis" in window
+) {
+
+    window.speechSynthesis
+        .onvoiceschanged =
+        function() {
+
+            window.speechSynthesis
+                .getVoices();
+
+        };
+
+}
+
+
+</script>
 
 </body>
 
