@@ -4,3 +4,4 @@ torchvision
 Pillow
 Werkzeug
 gunicorn
+openai
